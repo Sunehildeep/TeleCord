@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import PageTitle from '@/components/common/page-title';
-import { useTranslation } from 'react-i18next'; // Changed import
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <PageTitle title="Telecord" />
-      <h1>{t('title')}</h1> {/* Fixed access to translated string */}
+      <h1>{t('title')}</h1>
     </>
   );
 }
