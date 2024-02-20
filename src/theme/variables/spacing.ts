@@ -14,4 +14,14 @@ export const fontSizes = {
   base: '1rem',
   lg: '1.25rem',
   xl: '1.5rem',
+  xxl: '2rem',
+};
+
+// letter spacing in pixels
+export const letterSpacing = {
+  xs: '0.5px',
+  sm: '1px',
+  md: '2px',
+  lg: '3px',
+  xl: '4px',
 };

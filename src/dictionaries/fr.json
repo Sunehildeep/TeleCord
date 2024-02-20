@@ -1,10 +1,12 @@
 {
+    "lang": "FR",
     "home": {
         "title": "[FR] TeleCord",
         "menu": {
-            "home": "[FR] Home",
-            "about": "[FR] About",
+            "home": "[FR] About",
+            "about": "[FR] Privacy",
             "contact": "[FR] Contact"
-        }
+        },
+        "login_Signup": "[FR] Login/Signup"
     }
 }
