@@ -1,6 +1,10 @@
 {
     "home": {
-        "pageTitle": "Bienvenue sur TeleCord",
-        "title": "Inscrivez-vous à TeleCord"
+        "title": "[FR] TeleCord",
+        "menu": {
+            "home": "[FR] Home",
+            "about": "[FR] About",
+            "contact": "[FR] Contact"
+        }
     }
 }

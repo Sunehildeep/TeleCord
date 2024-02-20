@@ -1,5 +1,3 @@
-import "server-only";
-
 export type Locale = keyof typeof dictionaries;
 
 const dictionaries = {
