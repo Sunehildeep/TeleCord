@@ -29,8 +29,13 @@ const SignUp = () => {
       <LoginForm onSubmit={onSubmit}>
         <InputField
           type="text"
-          placeholder="Email or Username"
+          placeholder="Email"
           aria-label="Enter your email or username"
+        />
+        <InputField
+          type="text"
+          placeholder="Username"
+          aria-label="Enter unique username"
         />
         <PasswordField
           type="password"
