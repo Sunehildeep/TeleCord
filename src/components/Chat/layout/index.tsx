@@ -1,13 +1,18 @@
 "use client";
 import React from "react";
-import {
-  ChatInput,
-  ChatList,
-} from "./styles";
+import { ChatInput, ChatList } from "./styles";
+import ChatHeader from "../header";
+import Search from "../search";
 
 const ChatLayout = () => {
   return (
-        <><ChatList></ChatList><ChatInput></ChatInput></>
+    <>
+      <ChatList>
+        <ChatHeader />
+        <Search />
+      </ChatList>
+      <ChatInput></ChatInput>
+    </>
   );
 };
 

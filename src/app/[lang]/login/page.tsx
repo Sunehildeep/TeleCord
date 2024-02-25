@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import PageTitle from "@/components/PageTitle";
 import {
   LoginForm,
@@ -15,7 +15,12 @@ import Link from "next/link";
 const Login = () => {
   const router = useRouter();
   const signUpUrl = `/sign-up`;
-  router.prefetch(signUpUrl);
+
+  useEffect(() => {
+    router.prefetch(signUpUrl);
+    router.prefetch("/chat");
+  });
+
   return (
     <>
       <PageTitle title="Login" />
