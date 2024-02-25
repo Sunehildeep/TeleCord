@@ -1,12 +1,12 @@
 import PageTitle from '@/components/PageTitle'
 import React from 'react'
 
-const Login = () => {
+const page = () => {
   return (
     <div>
-      <PageTitle title="Login" />
+      <PageTitle title="Sign Up" />
     </div>
   )
 }
 
-export default Login
+export default page
