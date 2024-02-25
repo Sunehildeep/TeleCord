@@ -21,6 +21,8 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    setCommunityName("");
+    setMembers("");
     setShowModal(false);
   };
 
@@ -31,7 +33,11 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
   return (
     <>
       {showModal && (
-        <ModalBackground onClick={closeModal}>
+        <ModalBackground
+          onClick={closeModal}
+          aria-hidden="true"
+          onKeyDown={(e) => e.key === "Escape" && closeModal()}
+        >
           <ModalContainer onClick={(e) => e.stopPropagation()}>
             <ModalTitle>Create Community</ModalTitle>
             <Form onSubmit={handleSubmit}>
@@ -42,6 +48,8 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
                   id="communityName"
                   value={communityName}
                   onChange={(e) => setCommunityName(e.target.value)}
+                  aria-labelledby="communityName"
+                  aria-describedby="Enter Community Name"
                   required
                 />
               </FormGroup>
@@ -52,6 +60,8 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
                   id="members"
                   value={members}
                   onChange={(e) => setMembers(e.target.value)}
+                  aria-labelledby="members"
+                  aria-describedby="Add Members by writing their username separated by comma"
                   required
                 />
               </FormGroup>
