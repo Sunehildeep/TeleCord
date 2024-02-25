@@ -6,14 +6,12 @@ export const colors = {
   black: '#000000',
   grey: '#767676',
   lightGrey: '#EFEFEF',
-  darkGrey: '#3C3C3C',
-  error: '#FF0000',
   success: '#00FF00',
   warning: '#FFA500',
-  info: '#00BFFF',
   dark: '#000000',
-  light: '#FFFFFF',
-  transparent: 'transparent',
   headerBgColor: '#2c3e50;',
-  langButtonColor: '#2c3e88;'
+  langButtonColor: '#2c3e88;',
+  chatBubbleColorSent: '#dcf8c6;',
+  chatBubbleColorReceived: '#f0f0f0;',
+  chatBackgroundColor: '#d5f5f5;',
 };
