@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const LoginForm = styled.form`
   width: 300px;
@@ -47,15 +47,15 @@ export const SubmitButton = styled.button`
 export const SignupButton = styled(SubmitButton)`
   margin-top: 10px;
   background-color: #28a745;
-  
+
   &:hover {
     background-color: #218838;
   }
 `;
 
 export const LeadPara = styled.p`
-    font-size: 16px;
-    text-align: center;
-    margin-top: 20px;
-    color: #666;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
 `;

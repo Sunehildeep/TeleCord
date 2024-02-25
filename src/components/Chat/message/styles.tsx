@@ -7,7 +7,9 @@ interface ChatBubbleProps {
 }
 
 const getBackgroundColor = (sentReceived: number) => {
-  return sentReceived === 0 ? colors.chatBubbleColorSent : colors.chatBubbleColorReceived;
+  return sentReceived === 0
+    ? colors.chatBubbleColorSent
+    : colors.chatBubbleColorReceived;
 };
 
 export const ChatBubble = styled.div`

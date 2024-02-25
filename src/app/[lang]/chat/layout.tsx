@@ -1,10 +1,8 @@
-import ChatLayout from '@/components/Chat/layout'
-import React from 'react'
+import ChatLayout from "@/components/Chat/layout";
+import React from "react";
 
 const layout = () => {
-  return (
-    <ChatLayout />
-  )
-}
+  return <ChatLayout />;
+};
 
-export default layout
+export default layout;
