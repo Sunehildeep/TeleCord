@@ -5,6 +5,7 @@ import MainPage from "@/components/MainPage";
 
 export default async function Home({ params: { lang } }: Home) {
 	const dict = await getDictionary(lang);
+
 	return (
 		<>
 			<PageTitle title="Telecord" />
