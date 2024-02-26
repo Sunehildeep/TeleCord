@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { colors } from "@/theme/variables/colors";
-import { FaRegUserCircle } from "react-icons/fa";
-import { CiCirclePlus } from "react-icons/ci";
-import { IoIosSettings } from "react-icons/io";
+// import { FaRegUserCircle } from "react-icons/fa";
+// import { CiCirclePlus } from "react-icons/ci";
+// import { IoIosSettings } from "react-icons/io";
 
 export const HeaderContainer = styled.div`
     padding: 25px;
@@ -19,7 +19,7 @@ export const HeaderItems = styled.div`
 `;
 
 export const Icon = styled.div`
-    font-size: 24px;
+    font-size: 26px;
     cursor: pointer;
     margin-right: 20px;
     transition: transform 0.3s ease;
@@ -34,18 +34,18 @@ export const Icon = styled.div`
     }
 `;
 
-export const UserIcon = styled(FaRegUserCircle)`
-    font-size: 24px;
-    cursor: pointer;
-`;
+// export const UserIcon = styled(FaRegUserCircle)`
+//     font-size: 24px;
+//     cursor: pointer;
+// `;
 
-export const AddIcon = styled(CiCirclePlus)`
-    font-size: 24px;
-    cursor: pointer;
-`;
+// export const AddIcon = styled(CiCirclePlus)`
+//     font-size: 24px;
+//     cursor: pointer;
+// `;
 
-export const SettingIcon = styled(IoIosSettings)`
-    font-size: 24px;
-    cursor: pointer;
-`;
+// export const SettingIcon = styled(IoIosSettings)`
+//     font-size: 24px;
+//     cursor: pointer;
+// `;
 
