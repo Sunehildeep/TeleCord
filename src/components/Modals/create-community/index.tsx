@@ -20,7 +20,8 @@ interface ModalProps {
 const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
   const [communityName, setCommunityName] = useState("");
   const [members, setMembers] = useState("");
-  const [alertType, setAlertType] = useState<"success" | "error">(); 
+  const [alertType, setAlertType] = useState<"success" | "error" | null>(null); 
+  console.log(alertType);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -28,17 +29,20 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
     createCommunity(communityName, members).then((res) => {
       if (res.status === 200) {
         setAlertType("success");
+        setTimeout(() => {
+          setAlertType(null);
+        } , 1000);       
       } else {
         setAlertType("error");
       }
     });
-
     setCommunityName("");
     setMembers("");
     setShowModal(false);
   };
 
   const closeModal = () => {
+    setAlertType(null);
     setShowModal(false);
   };
 
@@ -82,7 +86,7 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
           </ModalContainer>
         </ModalBackground>
       )}
-      {alertType && (
+      {alertType && alertType !== null && (
         <SweetAlert
           title={alertType === "success" ? "Success" : "Error"}
           text={
