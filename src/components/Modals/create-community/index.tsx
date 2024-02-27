@@ -9,6 +9,8 @@ import {
   ModalContainer,
   ModalTitle,
 } from "./styles";
+import { createCommunity } from "@/api";
+import SweetAlert from "../Swal";
 
 interface ModalProps {
   showModal: boolean;
@@ -18,9 +20,19 @@ interface ModalProps {
 const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
   const [communityName, setCommunityName] = useState("");
   const [members, setMembers] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "error">(); 
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+
+    createCommunity(communityName, members).then((res) => {
+      if (res.status === 200) {
+        setAlertType("success");
+      } else {
+        setAlertType("error");
+      }
+    });
+
     setCommunityName("");
     setMembers("");
     setShowModal(false);
@@ -70,8 +82,21 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
           </ModalContainer>
         </ModalBackground>
       )}
+      {alertType && (
+        <SweetAlert
+          title={alertType === "success" ? "Success" : "Error"}
+          text={
+            alertType === "success"
+              ? "Community created successfully!"
+              : "Failed to create community"
+          }
+          type={alertType}
+          confirmButtonText="OK"
+        />
+      )}
     </>
   );
 };
 
 export default AddCommunityModal;
+
