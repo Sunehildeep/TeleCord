@@ -106,6 +106,7 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
                 <InlineError>{errors.members?.message?.toString()}</InlineError>
               </FormGroup>
               <Button type="submit">Create</Button>
+              <Button type="reset">Reset</Button>
             </Form>
           </ModalContainer>
         </ModalBackground>

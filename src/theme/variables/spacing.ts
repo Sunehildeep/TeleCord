@@ -1,5 +1,6 @@
 // spacing variables in pixels
 export const spacing = {
+  xxs: '2px', 
   xs: '5px',
   sm: '10px',
   md: '20px',

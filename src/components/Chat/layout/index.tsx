@@ -3,6 +3,7 @@ import React from "react";
 import { BottomPara, ChatInput, ChatList, DefaultScreen, DefaultScreenHeading, LeadPara } from "./styles";
 import ChatHeader from "../header";
 import Search from "../search";
+import CommunityArea from "../CommunityArea";
 
 const ChatLayout = () => {
   return (
@@ -10,6 +11,7 @@ const ChatLayout = () => {
       <ChatList>
         <ChatHeader />
         <Search />
+        <CommunityArea />
       </ChatList>
       <ChatInput>
         <DefaultScreen>

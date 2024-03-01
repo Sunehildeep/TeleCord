@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import { colors } from "@/theme/variables/colors";
 import { fontSizes, spacing } from "@/theme/variables/spacing";
 
@@ -53,11 +53,17 @@ export const InputItm = styled.input`
 export const Button = styled.button`
   padding: 10px;
   font-size: ${fontSizes.base};
-  background-color: #007bff;
-  color: #ffffff;
+  background-color: ${colors.secondary};
+  color: ${colors.white};
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  ${({ type }) =>
+  type === "reset" &&
+  css`
+    background-color: ${colors.grey};
+    margin-top: 10px;
+  `}
 `;
 
 export const InlineError = styled.p`
