@@ -3,6 +3,7 @@ import {
   Button,
   Form,
   FormGroup,
+  InlineError,
   InputItm,
   Label,
   ModalBackground,
@@ -11,33 +12,41 @@ import {
 } from "./styles";
 import { createCommunity } from "@/api";
 import SweetAlert from "../Swal";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface ModalProps {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type FormData = {
+  communityName: string;
+  members: string;
+};
+
 const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
-  const [communityName, setCommunityName] = useState("");
-  const [members, setMembers] = useState("");
-  const [alertType, setAlertType] = useState<"success" | "error" | null>(null); 
-  console.log(alertType);
+  const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
+  
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>();
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-
-    createCommunity(communityName, members).then((res) => {
+  const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
+    console.log(data);
+    createCommunity(data.communityName, data.members).then((res) => {
       if (res.status === 200) {
         setAlertType("success");
+        reset();
         setTimeout(() => {
           setAlertType(null);
-        } , 1000);       
+        }, 1000);
       } else {
         setAlertType("error");
       }
     });
-    setCommunityName("");
-    setMembers("");
     setShowModal(false);
   };
 
@@ -56,30 +65,45 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
         >
           <ModalContainer onClick={(e) => e.stopPropagation()}>
             <ModalTitle>Create Community</ModalTitle>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
               <FormGroup>
                 <Label htmlFor="communityName">Community Name</Label>
                 <InputItm
                   type="text"
                   id="communityName"
-                  value={communityName}
-                  onChange={(e) => setCommunityName(e.target.value)}
                   aria-labelledby="communityName"
                   aria-describedby="Enter Community Name"
-                  required
+                  {...register("communityName", {
+                    required: "This is required",
+                    maxLength: {
+                      value: 20,
+                      message: "Max length is 20",
+                    },
+                    minLength: {
+                      value: 2,
+                      message: "Min length is 2",
+                    },
+                  })}
                 />
+                <InlineError>
+                  {errors.communityName?.message?.toString()}
+                </InlineError>
               </FormGroup>
               <FormGroup>
                 <Label htmlFor="members">Members (comma-separated)</Label>
                 <InputItm
                   type="text"
                   id="members"
-                  value={members}
-                  onChange={(e) => setMembers(e.target.value)}
                   aria-labelledby="members"
                   aria-describedby="Add Members by writing their username separated by comma"
-                  required
+                  {...register("members", {
+                    required: {
+                      value: true,
+                      message: "This is required",
+                    },
+                  })}
                 />
+                <InlineError>{errors.members?.message?.toString()}</InlineError>
               </FormGroup>
               <Button type="submit">Create</Button>
             </Form>
@@ -103,4 +127,3 @@ const AddCommunityModal = ({ showModal, setShowModal }: ModalProps) => {
 };
 
 export default AddCommunityModal;
-

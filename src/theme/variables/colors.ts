@@ -14,4 +14,5 @@ export const colors = {
   chatBubbleColorSent: '#dcf8c6;',
   chatBubbleColorReceived: '#f0f0f0;',
   chatBackgroundColor: '#d5f5f5;',
+  red : '#FF0000',
 };

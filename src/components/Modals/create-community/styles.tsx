@@ -59,3 +59,9 @@ export const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
 `;
+
+export const InlineError = styled.p`
+  color: ${colors.red};
+  font-size: ${fontSizes.sm};
+  margin-top: 5px;
+`;
