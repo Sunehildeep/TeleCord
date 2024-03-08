@@ -2,11 +2,20 @@
     "lang": "EN",
     "home": {
         "title": "TeleCord",
-        "menu": {
-            "home": "About",
-            "about": "Privacy",
-            "contact": "Contact"
-        },
+        "menu": [
+            {
+                "name": "Home",
+                "link": "/home"
+            },
+            {
+                "name": "About",
+                "link": "/about"
+            },
+            {
+                "name": "Contact",
+                "link": "/contact"
+            }
+        ],
         "login_Signup": "Login/Signup"
     }
 }

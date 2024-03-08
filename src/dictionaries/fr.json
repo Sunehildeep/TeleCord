@@ -2,11 +2,20 @@
     "lang": "FR",
     "home": {
         "title": "[FR] TeleCord",
-        "menu": {
-            "home": "[FR] About",
-            "about": "[FR] Privacy",
-            "contact": "[FR] Contact"
-        },
+        "menu": [
+            {
+                "name": "Home",
+                "link": "/"
+            },
+            {
+                "name": "Login/Signup",
+                "link": "/login"
+            },
+            {
+                "name": "About",
+                "link": "/about"
+            }
+        ],
         "login_Signup": "[FR] Login/Signup"
     }
 }
