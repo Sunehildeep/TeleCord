@@ -14,8 +14,13 @@ const CommunityArea = () => {
 
 	return (
 		<div className="flex-1 w-full h-full p-2 bg-white">
-			{communitiesData.map((community: Community) => (
-				<CommunityItem {...community} />
+			{communitiesData.map((community: any) => (
+				<CommunityItem
+					image={community.Image || "/images/default.png"}
+					communityName={community.CommunityName}
+					lastMessage={community.LastMessage}
+					time={community.Time}
+				/>
 			))}
 		</div>
 	);
