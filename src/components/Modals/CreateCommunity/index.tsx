@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { createCommunity } from "@/api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -18,8 +18,6 @@ type FormData = {
 };
 
 const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
-	const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
-
 	const {
 		register,
 		handleSubmit,
@@ -31,36 +29,23 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 		console.log(data);
 		createCommunity(data.communityName, data.members).then((res) => {
 			if (res.status === 200) {
-				setAlertType("success");
 				reset();
-				setTimeout(() => {
-					setAlertType(null);
-				}, 1000);
+				Swal.fire({
+					title: "Success!",
+					text: "Community created successfully!",
+					icon: "success",
+					confirmButtonText: "OK",
+				});
 			} else {
-				setAlertType("error");
+				Swal.fire({
+					title: "Error!",
+					text: "Community creation failed!",
+					icon: "error",
+					confirmButtonText: "OK",
+				});
 			}
 		});
-		// onOpenChange(false);
 	};
-
-	const closeModal = () => {
-		setAlertType(null);
-		// onOpenChange(false);
-	};
-
-	useEffect(() => {
-		alertType !== null &&
-			Swal.fire({
-				title: alertType === "success" ? "Success" : "Error",
-				text:
-					alertType === "success"
-						? "Community created successfully!"
-						: "Failed to create community",
-				icon: alertType,
-				confirmButtonText: "OK",
-			});
-	}),
-		[alertType];
 
 	return (
 		<>
@@ -117,8 +102,17 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 								</ModalBody>
 
 								<ModalFooter>
-									<Button type="submit">Create</Button>
-									<Button type="reset">Reset</Button>
+									<Button type="submit" onPress={onClose}>
+										Create
+									</Button>
+									<Button
+										type="reset"
+										onPress={() => {
+											reset();
+										}}
+									>
+										Reset
+									</Button>
 								</ModalFooter>
 							</form>
 						</>
