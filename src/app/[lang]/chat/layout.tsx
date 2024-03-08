@@ -1,19 +1,13 @@
 "use client";
 import React from "react";
-import {
-  ChatContainer,
-  ChatPageContainer,
-} from "./styles";
-import ChatLayout from "@/components/Chat/layout";
+import ChatLayout from "@/components/Chat/ChatLayout";
 
 const layout = () => {
-  return (
-    <ChatPageContainer>
-      <ChatContainer>
-        <ChatLayout />
-      </ChatContainer>
-    </ChatPageContainer>
-  );
+	return (
+		<div className="container m-auto">
+			<ChatLayout />
+		</div>
+	);
 };
 
 export default layout;
