@@ -6,14 +6,22 @@ export const connectToSocketIO = () => {
     socket.on('connect', () => {
         console.log('Connected to socket.io');
     });
-
-    socket.on('disconnect', () => {
-        console.log('Disconnected from socket.io');
-    });
-
+    
     return socket;
 }
 
-export const sendMessage = (message: string) => {
-    socket.emit('message_send', message);
+export const sendMessage = (message: SendMessage) => {
+    if(socket.connected){
+        socket.emit('message_send', message);
+    }
+    else{
+        console.log('Socket is not connected');
+    }
+}
+
+export const receiveMessage = (setMessageCallback : any) => {
+    socket.on('new_msg', (data) => {
+        console.log("Received message from server: ", data);
+        setMessageCallback(data.message);
+    });
 }

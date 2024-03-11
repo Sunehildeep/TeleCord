@@ -4,8 +4,10 @@ import ChatHeader from "../Header";
 import Search from "../Search";
 import CommunityArea from "../CommunityArea";
 import { Card, CardBody } from "@nextui-org/react";
+import ChatArea from "../ChatArea";
 
 const ChatLayout = () => {
+	const isActive = true;
 	return (
 		<Card className="m-4 h-[90vh]">
 			<CardBody className="flex flex-row w-full h-full p-0">
@@ -14,7 +16,8 @@ const ChatLayout = () => {
 					<Search />
 					<CommunityArea />
 				</div>
-				<div className="flex-1 bg-gray-100 flex flex-col items-center justify-center">
+				{isActive ? <ChatArea /> : (
+					<div className="flex-1 bg-gray-100 flex flex-col items-center justify-center">
 					<div className="mt-auto flex flex-col items-center justify-center w-full h-full p-4">
 						<h1 className="text-2xl text-center font-light">
 							Welcome to Telecord
@@ -30,6 +33,8 @@ const ChatLayout = () => {
 						</h3>
 					</div>
 				</div>
+				)}
+				
 			</CardBody>
 		</Card>
 	);
