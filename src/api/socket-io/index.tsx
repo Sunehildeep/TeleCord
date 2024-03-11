@@ -22,6 +22,6 @@ export const sendMessage = (message: SendMessage) => {
 export const receiveMessage = (setMessageCallback : any) => {
     socket.on('new_msg', (data) => {
         console.log("Received message from server: ", data);
-        setMessageCallback(data.message);
+        setMessageCallback(data);
     });
 }

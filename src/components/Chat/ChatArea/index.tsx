@@ -25,7 +25,11 @@ const ChatArea = () => {
     const handleSendMessage = () => {
         sendMessage(message1);
         setMessage('');
-        receiveMessage(setReceivedMessage)
+        receiveMessage((data : any) => {
+            if ( data.community_id === 1){
+                setReceivedMessage(data.message);
+            }
+        })
     };
 
   return (
