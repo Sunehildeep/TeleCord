@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Card, CardBody, Input } from "@nextui-org/react";
+import Link from "next/link";
 
 const SignUp = () => {
     const router = useRouter();
@@ -54,7 +55,9 @@ const SignUp = () => {
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">Already have an account?{' '}
+            <Link href="/login">
             <span className="text-purple-500 cursor-pointer" >Log In</span>
+            </Link>
           </p>
         </div>
       </div>

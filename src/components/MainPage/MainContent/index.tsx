@@ -3,7 +3,7 @@ import Link from 'next/link';
 const MainContent = () => {
   return (
     <div className='bg-purple-100'>
-    <section className="max-w-4xl mx-auto px-4 py-8 ">
+    <section className="max-w-2xl mx-auto py-8 ">
       <h2 className="text-3xl font-bold mb-4 text-center">Welcome to Telecord</h2>
       <p className="text-lg mb-8 text-center">Connect, Share, and Engage with your college community like never before.</p>
 
