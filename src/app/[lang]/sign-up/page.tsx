@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button, Card, CardBody, Input } from "@nextui-org/react";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { SignUpAPI } from "@/api/authentication";
 
 type FormValues = {
   email: string;
@@ -23,6 +24,13 @@ const SignUp = () => {
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     // Handle form submission
     console.log("Form submitted:", data);
+    SignUpAPI(data.email, data.username, data.password)
+      .then((res) => {
+        console.log("Sign up response:", res);
+      })
+      .catch((err) => {
+        console.error("There was a problem with the sign up:", err);
+      });
   };
 
   return (
@@ -58,7 +66,7 @@ const SignUp = () => {
               className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-purple-500"
               {...register("password", {
                 required: true,
-                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/,
               })}
             />
             {errors.password && errors.password.type === "required" && (
