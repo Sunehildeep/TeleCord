@@ -32,8 +32,24 @@ const ChatArea = () => {
         })
     };
 
+    const translateMessage = () => {
+        // Translate message
+    };
+
   return (
     <div>
+
+        <div className="bg-gray-300 py-4 px-3">
+            <div className="container mx-auto flex justify-end items-center">
+            {/* Translate button */}
+            <button className="text-sm text-white bg-gray-600 hover:bg-gray-700 py-2 px-3 rounded" onClick={translateMessage}>
+                Translate
+            </button>
+
+            {/* other menu items here */}
+            </div>
+        </div>
+
       <input type="text" value={message} onChange={handleMessageChange} />
       <button onClick={handleSendMessage}>Send Message</button>
       <p>Received message: {receivedMessage}</p>
