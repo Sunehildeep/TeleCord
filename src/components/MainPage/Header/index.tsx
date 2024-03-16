@@ -42,20 +42,10 @@ const Header = () => {
 				</NavbarBrand>
 			</NavbarContent>
 
-			<NavbarContent className="hidden sm:flex gap-4" justify="center">
-				{dict.home.menu.map((item: any, index: number) => (
-					<NavbarItem key={index} isActive={pathname === `${item.link}`}>
-						<Link href={`${item.link}`} className="text-white">
-							{item.name}
-						</Link>
-					</NavbarItem>
-				))}
-			</NavbarContent>
-
 			<NavbarContent justify="end">
 				<NavbarItem className="hidden lg:flex">
 					<Button>
-						<Link href="/auth" className="text-black">
+						<Link href="/login" className="text-black">
 							{dict.home.login_Signup}
 						</Link>
 					</Button>
