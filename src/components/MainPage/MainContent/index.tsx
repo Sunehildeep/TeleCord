@@ -1,56 +1,96 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
+import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 const MainContent = () => {
-  return (
-    <div className='bg-purple-100'>
-    <section className="max-w-2xl mx-auto py-8 ">
-      <h2 className="text-3xl font-bold mb-4 text-center">Welcome to Telecord</h2>
-      <p className="text-lg mb-8 text-center">Connect, Share, and Engage with your college community like never before.</p>
+	return (
+		<div className="bg-purple-100">
+			<section className="max-w-2xl mx-auto py-8 ">
+				<h2 className="text-3xl font-bold mb-4 text-center">
+					Welcome to Telecord
+				</h2>
+				<p className="text-lg mb-8 text-center">
+					Connect, Share, and Engage with your college community like never
+					before.
+				</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
-          <h3 className="text-xl font-bold mb-2">Real-Time Messaging 📨</h3>
-          <p>Send and receive messages instantly. Our real-time sockets ensure you’re always in the loop.</p>
-        </div>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<Card className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
+						<CardHeader className="text-xl font-bold mb-2">
+							Real-Time Messaging 📨
+						</CardHeader>
+						<CardBody>
+							Send and receive messages instantly. Our real-time sockets ensure
+							you’re always in the loop.
+						</CardBody>
+					</Card>
 
-        <div className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
-          <h3 className="text-xl font-bold mb-2">Media Sharing 📸🎥</h3>
-          <p>Upload images and videos directly in the chat. Share your moments and work seamlessly.</p>
-        </div>
+					<Card className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
+						<CardHeader className="text-xl font-bold mb-2">
+							Media Sharing 📸🎥
+						</CardHeader>
+						<CardBody>
+							Upload images and videos directly in the chat. Share your moments
+							and work seamlessly.
+						</CardBody>
+					</Card>
 
-        <div className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
-          <h3 className="text-xl font-bold mb-2">Community Search 🔍</h3>
-          <p>Find and join communities that matter to you. Our search makes it easy to connect with like-minded individuals.</p>
-        </div>
+					<Card className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
+						<CardHeader className="text-xl font-bold mb-2">
+							Community Search 🔍
+						</CardHeader>
+						<CardBody>
+							Find and join communities that matter to you. Our search makes it
+							easy to connect with like-minded individuals.
+						</CardBody>
+					</Card>
 
-        <div className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
-          <h3 className="text-xl font-bold mb-2">Instant Translation 🌐</h3>
-          <p>Communicate without barriers. Select a language and have your messages translated on-the-fly.</p>
-        </div>
+					<Card className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
+						<CardHeader className="text-xl font-bold mb-2">
+							Instant Translation 🌐
+						</CardHeader>
+						<CardBody>
+							Communicate without barriers. Select a language and have your
+							messages translated on-the-fly.
+						</CardBody>
+					</Card>
 
-        <div className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
-          <h3 className="text-xl font-bold mb-2">Group Details 👥</h3>
-          <p>Stay informed with group details at a glance. See who’s in the chat and join the conversation.</p>
-        </div>
+					<Card className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
+						<CardHeader className="text-xl font-bold mb-2">
+							Group Details 👥
+						</CardHeader>
+						<CardBody>
+							Stay informed with group details at a glance. See who’s in the
+							chat and join the conversation.
+						</CardBody>
+					</Card>
 
-        <div className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
-          <h3 className="text-xl font-bold mb-2">Secure Login 🔒</h3>
-          <p>Sign up and log in with ease. Our integration with next-auth keeps your data safe and secure.</p>
-        </div>
-      </div>
+					<Card className="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
+						<CardHeader className="text-xl font-bold mb-2">
+							Secure Login 🔒
+						</CardHeader>
+						<CardBody>
+							Sign up and log in with ease. Our integration with next-auth keeps
+							your data safe and secure.
+						</CardBody>
+					</Card>
+				</div>
 
-      <div className="text-center mt-8">
-        <h2 className="text-3xl font-bold mb-4">Get Started with Telecord Today!</h2>
-        <p className="text-lg">Join the platform that’s redefining campus communication.</p>
-        <Link href="/sign-up">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full mt-6 transition duration-300 ease-in-out transform hover:scale-105">
-            Sign Up Now
-          </button>
-        </Link>
-      </div>
-    </section>
-    </div>
-  );
+				<div className="text-center mt-8">
+					<h2 className="text-3xl font-bold mb-4">
+						Get Started with Telecord Today!
+					</h2>
+					<p className="text-lg">
+						Join the platform that’s redefining campus communication.
+					</p>
+					<Link href="/sign-up">
+						<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full mt-6 transition duration-300 ease-in-out transform hover:scale-105">
+							Sign Up Now
+						</Button>
+					</Link>
+				</div>
+			</section>
+		</div>
+	);
 };
 
 export default MainContent;

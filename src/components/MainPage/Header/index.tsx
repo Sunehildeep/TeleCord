@@ -12,11 +12,9 @@ import {
 	Button,
 } from "@nextui-org/react";
 import { getDictionary } from "@/functions/getDictionary";
-import { usePathname } from "next/navigation";
 
 const Header = () => {
 	const lang = "en";
-	const pathname = usePathname();
 	const [dict, setDict] = useState<any>({});
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [loading, setLoading] = useState(true);
