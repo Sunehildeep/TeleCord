@@ -8,7 +8,7 @@ const ChatHeader = () => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 	return (
-		<div className="container m-auto p-4 bg-white border-b-2 border-gray-300">
+		<div className="container m-auto p-4 bg-white border-b-[1px] border-gray-300">
 			<div className="flex items-center justify-between">
 				<div className="p-2 text-xl">
 					<FaRegUserCircle />

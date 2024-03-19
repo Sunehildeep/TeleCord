@@ -11,6 +11,7 @@ import {
 	Link,
 } from "@nextui-org/react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { LoginAPI } from "@/api/authentication";
 
 type FormValues = {
 	emailOrUsername: string;
@@ -33,6 +34,13 @@ const Login = () => {
 	const onSubmit: SubmitHandler<FormValues> = (data) => {
 		// Handle form submission
 		console.log("Form submitted:", data);
+		LoginAPI(data.emailOrUsername, data.password)
+			.then((res) => {
+				console.log("Login response:", res);
+			})
+			.catch((err) => {
+				console.error("There was a problem with the Login:", err);
+			});
 	};
 
 	return (
@@ -52,9 +60,7 @@ const Login = () => {
 								{...register("emailOrUsername", { required: true })}
 							/>
 							{errors.emailOrUsername && (
-								<span className="text-red-500">
-									Email or Username is required
-								</span>
+								<span className="text-red-500">Email</span>
 							)}
 						</div>
 						<div className="mb-6">
