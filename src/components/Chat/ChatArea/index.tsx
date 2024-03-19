@@ -14,7 +14,7 @@ const ChatArea = () => {
 	useEffect(() => {
 		const socket = connectToSocketIO();
 		return () => {
-			socket.connect();
+			socket.disconnect();
 		};
 	}, []);
 
