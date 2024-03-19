@@ -53,7 +53,7 @@ const ChatArea = () => {
 			</div>
 
 			{/* Messaging area */}
-			<div className="p-4 w-full h-full">
+			<div className="p-4 w-full h-full overflow-y-auto">
 				{receivedMessages.length > 0 ? (
 					receivedMessages.map((message: string, index: number) => {
 						return (
