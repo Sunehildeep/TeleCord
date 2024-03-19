@@ -12,10 +12,7 @@ const ChatArea = () => {
 	const [receivedMessages, setReceivedMessages] = useState([] as string[]);
 
 	useEffect(() => {
-		const socket = connectToSocketIO();
-		return () => {
-			socket.disconnect();
-		};
+		connectToSocketIO();
 	}, []);
 
 	const handleMessageChange = (event: any) => {
