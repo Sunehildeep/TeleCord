@@ -34,8 +34,7 @@ const SignUp = () => {
 
 	const onSubmit: SubmitHandler<FormValues> = (data) => {
 		// Handle form submission
-		console.log("Form submitted:", data);
-		SignUpAPI(data.email, data.username, data.password)
+		SignUpAPI(data.email, data.password)
 			.then((res) => {
 				console.log("Sign up response:", res);
 			})
@@ -64,7 +63,7 @@ const SignUp = () => {
 								<span className="text-red-500">Email is required</span>
 							)}
 						</div>
-						<div className="mb-6">
+						{/* <div className="mb-6">
 							<Input
 								type="text"
 								placeholder="Username"
@@ -75,7 +74,7 @@ const SignUp = () => {
 							{errors.username && (
 								<span className="text-red-500">Username is required</span>
 							)}
-						</div>
+						</div> */}
 						<div className="mb-6">
 							<Input
 								type="password"

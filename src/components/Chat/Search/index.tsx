@@ -28,7 +28,7 @@ const Search = () => {
 					"dark:group-data-[focused=true]:bg-default/60",
 					"!cursor-text",
 				],
-				base: "p-2",
+				base: "p-2 border-b-[1px]",
 			}}
 			placeholder="Type to search..."
 			startContent={
