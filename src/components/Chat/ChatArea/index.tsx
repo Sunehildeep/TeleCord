@@ -6,10 +6,13 @@ import {
 import { Button, Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Avatar } from "@nextui-org/react";
+import { ImAttachment } from "react-icons/im";
+import { FaFile } from "react-icons/fa";
 
 const ChatArea = () => {
 	const [currentMessage, setCurrentMessage] = useState("");
 	const [receivedMessages, setReceivedMessages] = useState([] as string[]);
+	const [files, setFiles] = useState<File[] | null>(null);
 
 	useEffect(() => {
 		connectToSocketIO();
@@ -35,8 +38,30 @@ const ChatArea = () => {
 		});
 	};
 
+	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			setFiles(Array.from(event.target.files));
+		}
+	};
+
 	const translateMessage = () => {
 		// Translate message
+	};
+
+	const handleSendFiles = () => {
+		// Send files
+		setFiles(null);
+	};
+
+	const removeFile = (index: number) => {
+		setFiles((prevFiles) => {
+			if (prevFiles) {
+				const newFiles = [...prevFiles];
+				newFiles.splice(index, 1);
+				return newFiles;
+			}
+			return null;
+		});
 	};
 
 	return (
@@ -82,15 +107,33 @@ const ChatArea = () => {
 					</div>
 				)}
 			</div>
-			{/* Bottom message */}
 			<div className="flex p-4 gap-2 w-full flex-col">
+				{files && files.length > 0 && (
+					<div className="flex gap-2 flex-wrap bg-gray-200 p-2 rounded-lg">
+						{files.map((file: File, index: number) => (
+							<div key={index} className="flex gap-2">
+								<span className="text-gray-500 flex flex-row gap-2 items-center justify-start">
+									<FaFile />
+									{file.name}
+								</span>
+								<span
+									className="text-gray-500 cursor-pointer"
+									onClick={() => removeFile(index)}
+								>
+									&#10005;
+								</span>
+							</div>
+						))}
+					</div>
+				)}
 				<Input
+					type="url"
 					label="Message"
-					isClearable
 					value={currentMessage}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") {
 							handleSendMessage();
+							if (files) handleSendFiles();
 						}
 					}}
 					onChange={handleMessageChange}
@@ -104,7 +147,7 @@ const ChatArea = () => {
 						],
 						innerWrapper: "bg-transparent",
 						inputWrapper: [
-							"shadow-xl",
+							"shadow-md",
 							"bg-default-200/50",
 							"dark:bg-default/60",
 							"backdrop-blur-xl",
@@ -117,6 +160,20 @@ const ChatArea = () => {
 						],
 					}}
 					placeholder="Type to message..."
+					endContent={
+						<div className="flex items-center m-auto justify-center">
+							<label htmlFor="file-upload">
+								<ImAttachment className="text-[22px] text-gray-500 cursor-pointer" />
+							</label>
+							<Input
+								id="file-upload"
+								type="file"
+								multiple
+								className="hidden"
+								onChange={handleFileChange}
+							/>
+						</div>
+					}
 				/>
 			</div>
 		</div>
