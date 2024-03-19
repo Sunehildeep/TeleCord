@@ -12,6 +12,7 @@ import {
 } from "@nextui-org/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { SignUpAPI } from "@/api/authentication";
+import Swal from "sweetalert2";
 
 type FormValues = {
 	email: string;
@@ -37,9 +38,27 @@ const SignUp = () => {
 		SignUpAPI(data.email, data.password)
 			.then((res) => {
 				console.log("Sign up response:", res);
+				if (res.status === 200) {
+					Swal.fire({
+						title: "Success!",
+						text: "Account created successfully",
+						icon: "success",
+						confirmButtonText: "Login",
+					}).then((result) => {
+						if (result.isConfirmed) {
+							router.push("/login");
+						}
+					});
+				}
 			})
 			.catch((err) => {
 				console.error("There was a problem with the sign up:", err);
+				Swal.fire({
+					title: "Error!",
+					text: "There was a problem creating your account",
+					icon: "error",
+					confirmButtonText: "Try again",
+				});
 			});
 	};
 
