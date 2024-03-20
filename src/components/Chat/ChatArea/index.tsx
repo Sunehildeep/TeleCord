@@ -6,6 +6,7 @@ import {
 import { Button, Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Avatar } from "@nextui-org/react";
+import { FaLanguage } from "react-icons/fa6";
 
 const ChatArea = () => {
 	const [currentMessage, setCurrentMessage] = useState("");
@@ -43,11 +44,11 @@ const ChatArea = () => {
 		<div className="w-full h-full flex flex-col">
 			<div className="bg-gray-300 py-[14.5px] px-3 items-center justify-end flex">
 				{/* Translate button */}
-				<Button
+				<Button  aria-label="Translate message" title="Translate message"
 					className="text-sm text-white bg-gray-600 hover:bg-gray-700 py-2 px-3"
 					onClick={translateMessage}
 				>
-					Translate
+					<FaLanguage size={32} />
 				</Button>
 				{/* other menu items here */}
 			</div>
