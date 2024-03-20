@@ -19,11 +19,11 @@ const ChatHeader = () => {
 		<div className="container m-auto p-4 bg-white border-b-[1px] border-gray-300">
 			<div className="flex items-center justify-between">
 				<div className="p-2 text-xl">
-					<FaRegUserCircle onClick={openUserProfile}/>
+					<FaRegUserCircle onClick={openUserProfile} className="cursor-pointer"/>
 				</div>
 				<UserProfileModal isOpen={userProfileOpen} onOpen={openUserProfile} onOpenChange={openUserProfileChange} />
 				<div className="p-2 text-xl">
-					<CiCirclePlus onClick={onOpen} />
+					<CiCirclePlus onClick={onOpen}  className="cursor-pointer"/>
 				</div>
 				<CreateCommunityModal
 					isOpen={isOpen}
@@ -31,7 +31,7 @@ const ChatHeader = () => {
 					onOpenChange={onOpenChange}
 				/>
 				<div className="p-2 text-lg">
-					<IoIosSettings onClick={openSetting}/>
+					<IoIosSettings onClick={openSetting}  className="cursor-pointer"/>
 				</div>
 				<SettingModal isOpen={settingOpen} onOpen={openSetting} onOpenChange={openSettingChange} />
 			</div>
