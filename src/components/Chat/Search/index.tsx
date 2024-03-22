@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
 import { FiSearch } from "react-icons/fi";
+import { searchCommunity } from "@/api";
+import { debounce } from "lodash";
 
-const Search = () => {
+const Search = ({
+	onChange,
+}: {
+	onChange: (results: any, isSearching: boolean) => void;
+}) => {
+	const [search, setSearch] = useState("");
+
+	const debouncedSearch = debounce((searchValue: string) => {
+		searchCommunity(searchValue).then((res) => {
+			onChange(res, true);
+		});
+	}, 500); // Adjust the debounce delay as per your requirement
+
+	useEffect(() => {
+		if (!search.trim()) {
+			onChange([], false);
+			return;
+		}
+		debouncedSearch(search);
+	}, [search]);
+
 	return (
 		<Input
+			value={search}
 			label="Search"
-			isClearable
 			radius="lg"
 			classNames={{
 				label: "text-black/50 dark:text-white/90",
@@ -34,6 +56,7 @@ const Search = () => {
 			startContent={
 				<FiSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
 			}
+			onChange={(e) => setSearch(e.target.value)}
 		/>
 	);
 };

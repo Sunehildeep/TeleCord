@@ -14,7 +14,6 @@ import {
 
 type FormData = {
 	communityName: string;
-	members: string;
 };
 
 const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
@@ -26,8 +25,7 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 	} = useForm<FormData>();
 
 	const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-		console.log(data);
-		createCommunity(data.communityName, data.members).then((res) => {
+		createCommunity(data.communityName).then((res) => {
 			if (res.status === 200) {
 				reset();
 				Swal.fire({
@@ -35,8 +33,9 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 					text: "Community created successfully!",
 					icon: "success",
 					confirmButtonText: "OK",
+				}).then(() => {
+					window.location.reload();
 				});
-				window.location.reload();
 			} else {
 				Swal.fire({
 					title: "Error!",
@@ -83,22 +82,6 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 									/>
 									<div className="text-red-500">
 										{errors.communityName?.message?.toString()}
-									</div>
-									<label htmlFor="members">Members (comma-separated)</label>
-									<Input
-										type="text"
-										id="members"
-										aria-labelledby="members"
-										aria-describedby="Add Members by writing their username separated by comma"
-										{...register("members", {
-											required: {
-												value: true,
-												message: "This is required",
-											},
-										})}
-									/>
-									<div className="text-red-500">
-										{errors.members?.message?.toString()}
 									</div>
 								</ModalBody>
 

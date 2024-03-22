@@ -4,10 +4,7 @@ const generateCommunityId = (): number => {
 	return randomId;
 };
 
-export const createCommunity = async (
-	communityName: string,
-	members: string
-) => {
+export const createCommunity = async (communityName: string) => {
 	try {
 		const response = await fetch(
 			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/addCommunity`,
@@ -19,7 +16,6 @@ export const createCommunity = async (
 				body: JSON.stringify({
 					CommunityId: generateCommunityId(),
 					CommunityName: communityName,
-					GroupMembers: members.split(","),
 					LastMessage: "Welcome to the community",
 				}),
 			}
@@ -55,6 +51,87 @@ export const getCommunities = async (username: string) => {
 		return response.json();
 	} catch (error) {
 		console.error("There was a problem with the getCommunities API:", error);
+		throw error;
+	}
+};
+
+export const searchCommunity = async (search: string) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/searchCommunity`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					Query: search,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return response.json();
+	} catch (error) {
+		console.error("There was a problem with the searchCommunity API:", error);
+		throw error;
+	}
+};
+
+// joinCommunity API
+export const joinCommunity = async (communityId: string, username: string) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/joinCommunity`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					CommunityId: communityId,
+					Username: username,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return response;
+	} catch (error) {
+		console.error("There was a problem with the joinCommunity API:", error);
+		throw error;
+	}
+};
+
+export const leaveCommunity = async (communityId: string, username: string) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/leaveCommunity`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					CommunityId: communityId,
+					Username: username,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return response;
+	} catch (error) {
+		console.error("There was a problem with the joinCommunity API:", error);
 		throw error;
 	}
 };
