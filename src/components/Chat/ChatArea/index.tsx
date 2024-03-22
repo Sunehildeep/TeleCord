@@ -69,7 +69,9 @@ const ChatArea = () => {
 		<div className="w-full h-full flex flex-col">
 			<div className="bg-gray-300 py-[14.5px] px-3 items-center justify-end flex">
 				{/* Translate button */}
-				<Button  aria-label="Translate message" title="Translate message"
+				<Button
+					aria-label="Translate message"
+					title="Translate message"
 					className="text-sm text-white bg-gray-600 hover:bg-gray-700 py-2 px-3"
 					onClick={translateMessage}
 				>

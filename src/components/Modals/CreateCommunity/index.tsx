@@ -36,6 +36,7 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 					icon: "success",
 					confirmButtonText: "OK",
 				});
+				window.location.reload();
 			} else {
 				Swal.fire({
 					title: "Error!",

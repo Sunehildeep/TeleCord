@@ -1,0 +1,3 @@
+interface Auth {
+	authType: string;
+}

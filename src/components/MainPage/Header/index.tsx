@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import {
 	Navbar,
 	NavbarBrand,
@@ -11,24 +10,19 @@ import {
 	Link,
 	Button,
 } from "@nextui-org/react";
-import { getDictionary } from "@/functions/getDictionary";
+import { useState } from "react";
+
+const navItems = [
+	{
+		name: "Login",
+		link: "/auth",
+	},
+];
 
 const Header = () => {
-	const lang = "en";
-	const [dict, setDict] = useState<any>({});
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		getDictionary(lang).then((dictionary) => {
-			setDict(dictionary);
-			setLoading(false);
-		});
-	}, [lang]);
-
-	return loading ? (
-		<></>
-	) : (
+	return (
 		<Navbar onMenuOpenChange={setIsMenuOpen} className="bg-gray-700 shadow-md">
 			<NavbarContent>
 				<NavbarMenuToggle
@@ -36,30 +30,29 @@ const Header = () => {
 					className="sm:hidden text-white"
 				/>
 				<NavbarBrand>
-					<p className="font-bold text-white">{dict.home.title}</p>
+					<p className="font-bold text-white">TeleCord</p>
 				</NavbarBrand>
 			</NavbarContent>
 
 			<NavbarContent justify="end">
-				<NavbarItem className="hidden lg:flex">
-					<Button>
-						<Link href="/login" className="text-black">
-							{dict.home.login_Signup}
-						</Link>
-					</Button>
-				</NavbarItem>
-				<NavbarItem>
-					<Button>{dict.lang}</Button>
+				<NavbarItem className="hidden lg:flex gap-4">
+					{navItems.map((item: any, index: number) => (
+						<Button key={`${item.name}-${index}`}>
+							<Link color="foreground" href={item.link} size="lg">
+								{item.name}
+							</Link>
+						</Button>
+					))}
 				</NavbarItem>
 			</NavbarContent>
 			<NavbarMenu>
-				{dict.home.menu.map((item: any, index: number) => (
+				{navItems.map((item: any, index: number) => (
 					<NavbarMenuItem key={`${item.name}-${index}`}>
 						<Link
 							color={
 								index === 2
 									? "primary"
-									: index === dict.home.menu.length - 1
+									: index === navItems.length - 1
 									? "danger"
 									: "foreground"
 							}

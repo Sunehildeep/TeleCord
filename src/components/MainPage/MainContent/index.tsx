@@ -82,7 +82,7 @@ const MainContent = () => {
 					<p className="text-lg">
 						Join the platform that’s redefining campus communication.
 					</p>
-					<Link href="/sign-up">
+					<Link href="/auth">
 						<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full mt-6 transition duration-300 ease-in-out transform hover:scale-105">
 							Sign Up Now
 						</Button>
