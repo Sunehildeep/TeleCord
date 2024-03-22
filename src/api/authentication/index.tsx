@@ -1,6 +1,9 @@
-export const SignUpAPI = async (email: string, password: string) => {
+export const SignUpAPI = async (
+	email: string,
+	password: string,
+	username: string
+) => {
 	try {
-		console.log("Form submitted:", email, password);
 		const response = await fetch(
 			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/sign-up`,
 			{
@@ -11,6 +14,7 @@ export const SignUpAPI = async (email: string, password: string) => {
 				body: JSON.stringify({
 					Email: email,
 					Password: password,
+					Username: username,
 				}),
 			}
 		);
@@ -26,9 +30,12 @@ export const SignUpAPI = async (email: string, password: string) => {
 	}
 };
 
-export const LoginAPI = async (email: string, password: string) => {
+export const LoginAPI: (
+	email: string,
+	password: string
+) => Promise<Response> = async (email, password) => {
 	try {
-		const response = await fetch(
+		const response: any = await fetch(
 			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/login`,
 			{
 				method: "POST",
@@ -41,14 +48,43 @@ export const LoginAPI = async (email: string, password: string) => {
 				}),
 			}
 		);
+		const res = await response.json();
 
 		if (!response.ok) {
-			throw new Error("Network response was not ok");
+			throw new Error(res.error);
+		}
+		return res.user;
+	} catch (error) {
+		console.error("There was a problem with the login API:", error);
+		throw error;
+	}
+};
+
+export const GetUserAPI: (email: string) => Promise<Response> = async (
+	email
+) => {
+	try {
+		const response: any = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/getUser`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					Email: email,
+				}),
+			}
+		);
+		const res = await response.json();
+
+		if (!response.ok) {
+			throw new Error(res.error);
 		}
 
-		return response;
+		return res.user;
 	} catch (error) {
-		console.error("There was a problem with the signUp API:", error);
+		console.error("There was a problem with the get user API:", error);
 		throw error;
 	}
 };
