@@ -1,35 +1,26 @@
-import { getCommunities } from "@/api";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CommunityItem from "../CommunityItem";
-import { Link } from "@nextui-org/react";
-import { useSession } from "next-auth/react";
 
-const CommunityArea = () => {
-	const [communitiesData, setCommunitiesData] = useState<Community[]>([]);
-	const { data: session }: any = useSession();
-
-	useEffect(() => {
-		getCommunities(session?.user?.["Username"]).then((res) => {
-			setCommunitiesData(res);
-		}),
-			[];
-	}, [session]);
-
+const CommunityArea = ({
+	communities,
+	user,
+}: {
+	communities: any;
+	user: any;
+}) => {
 	return (
 		<div className="flex-1 w-full h-full p-2 bg-white">
-			{communitiesData.map((community: any) => (
-				<Link
-					href={`/chat/${community.CommunityId}`}
+			{communities.map((community: any) => (
+				<CommunityItem
 					key={community.CommunityId}
-					className="w-full h-20 flex items-center justify-between p-2 border-b-2 border-gray-200 hover:bg-gray-100 cursor-pointer"
-				>
-					<CommunityItem
-						image={community.Image || "/images/default.png"}
-						communityName={community.CommunityName}
-						lastMessage={community.LastMessage}
-						time={community.Time}
-					/>
-				</Link>
+					communityId={community.CommunityId}
+					image={community.Image || "/images/default.png"}
+					communityName={community.CommunityName}
+					lastMessage={community.LastMessage}
+					time={community.Time}
+					isJoinable={!community.GroupMembers.includes(user["Username"])}
+					username={user["Username"]}
+				/>
 			))}
 		</div>
 	);
