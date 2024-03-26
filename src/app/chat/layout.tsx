@@ -1,13 +1,5 @@
-"use client";
-import React from "react";
-import ChatLayout from "@/components/Chat/ChatLayout";
-
-const layout = () => {
-	return (
-		<div className="container m-auto">
-			<ChatLayout />
-		</div>
-	);
+const layout = ({ children }: { children: React.ReactNode }) => {
+	return <div className="container m-auto">{children}</div>;
 };
 
 export default layout;

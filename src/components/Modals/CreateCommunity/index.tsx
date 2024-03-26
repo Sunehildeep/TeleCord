@@ -26,7 +26,7 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 
 	const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
 		createCommunity(data.communityName).then((res) => {
-			if (res.status === 200) {
+			if (res.ok) {
 				reset();
 				Swal.fire({
 					title: "Success!",

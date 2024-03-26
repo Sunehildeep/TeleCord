@@ -1,7 +1,7 @@
-import React from "react";
+import ChatLayout from "@/components/Chat/ChatLayout";
 
 const Chat = () => {
-	return <></>;
+	return <ChatLayout />;
 };
 
 export default Chat;
