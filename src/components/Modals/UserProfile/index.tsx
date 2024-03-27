@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
 	Button,
-	Input,
 	Modal,
 	ModalBody,
 	ModalContent,
@@ -10,6 +9,7 @@ import {
 } from "@nextui-org/react";
 import { Avatar } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
+import { saveImageToS3, setProfilePictureUser } from "@/api";
 
 interface UserProfileModalProps {
 	isOpen: boolean;
@@ -22,50 +22,21 @@ const UserProfileModal = ({
 	onOpen,
 	onOpenChange,
 }: UserProfileModalProps) => {
-	const [editingUsername, setEditingUsername] = useState(false);
+
 	const { data: session }: any = useSession();
-	const [username, setUsername] = useState<string>(
-		session?.user?.["Username"] || "Your Username"
+
+	const [newProfileImage, setNewProfileImage] = useState(
+		session?.user?.ProfilePicture || null
 	);
-
-	const [newProfileImage, setNewProfileImage] = useState<string | null>(
-		session?.user?.["ProfilePic"] || null
-	);
-
-	const handleEditClick = (fieldName: string) => {
-		switch (fieldName) {
-			case "username":
-				setEditingUsername(true);
-				break;
-
-			default:
-				break;
-		}
-	};
-
-	const handleSaveClick = (fieldName: string) => {
-		switch (fieldName) {
-			case "username":
-				setEditingUsername(false);
-				break;
-			default:
-				break;
-		}
-	};
-
-	const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setUsername(e.target.value);
-	};
 
 	const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
-			const reader = new FileReader();
-			reader.onload = () => {
-				const dataURL = reader.result as string;
-				setNewProfileImage(dataURL);
-			};
-			reader.readAsDataURL(file);
+			saveImageToS3(file, session.user.Username).then((res) => {
+				setNewProfileImage(res.fileUrl);
+				setProfilePictureUser(session.user.Email, res.fileUrl).then((res) => {
+				});
+			});
 		}
 	};
 
@@ -97,35 +68,6 @@ const UserProfileModal = ({
 								</div>
 
 								<div className="flex flex-col">
-									<div className="flex items-center justify-around my-3">
-										{editingUsername ? (
-											<Input
-												label="Username"
-												value={username}
-												onChange={handleUsernameChange}
-												placeholder="Username"
-											/>
-										) : (
-											<>
-												<div>{username}</div>
-												<Button
-													onClick={() => handleEditClick("username")}
-													className="text-xs bg-gray-100 text-gray-800 hover:bg-gray-200 ml-2"
-												>
-													Edit
-												</Button>
-											</>
-										)}
-										{editingUsername && (
-											<Button
-												onClick={() => handleSaveClick("username")}
-												className="bg-gray-600 text-white hover:bg-gray-700 mx-4"
-											>
-												Save
-											</Button>
-										)}
-									</div>
-
 									<Button
 										className="block w-2 mt-4 m-auto border-1 bg-white text-black hover:bg-gray-300"
 										onClick={() => signOut()}
