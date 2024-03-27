@@ -160,7 +160,6 @@ export const saveChatMessage = async (message: SendMessage) => {
 
 		return response;
 	} catch (error) {
-		console.error("There was a problem with the saveChatMessage API:", error);
 		throw error;
 	}
 };
@@ -183,12 +182,11 @@ export const getChats = async (communityId: string) => {
 
 		return response.json();
 	} catch (error) {
-		console.error("There was a problem with the getChats API:", error);
 		throw error;
 	}
 };
 
-export const saveImageToS3 = async (file: File) => {
+export const saveImageToS3 = async (file: File, fileName?: String) => {
     try {
         // Read the file as base64
         const base64 = await readFileAsBase64(file);
@@ -200,7 +198,7 @@ export const saveImageToS3 = async (file: File) => {
         // Create the fileData object with base64 data and filename
         const fileData = {
             file_bytes: base64,
-            file_name: file.name,
+			file_name: `${fileName}.png` || file.name,
         };
 
         // Send a POST request to upload the file to S3
@@ -221,7 +219,6 @@ export const saveImageToS3 = async (file: File) => {
 
         return response.json();
     } catch (error) {
-        console.error("There was a problem with the saveImageToS3 API:", error);
         throw error;
     }
 };
@@ -235,3 +232,54 @@ const readFileAsBase64 = (file : File) => {
         reader.onerror = (error) => reject(error);
     });
 };
+
+export const setProfilePictureUser = async (email: string, profilePicture: string) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/updateUserProfilePicture`,
+			{
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					Email : email,
+					ProfilePicture : profilePicture,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return response;
+	} catch (error) {
+		throw error;
+	}
+}
+
+export const deleteUserAccount = async (email: string) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/deleteUser`,
+			{
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					Email : email,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return response;
+	} catch (error) {
+		throw error;
+	}
+}
