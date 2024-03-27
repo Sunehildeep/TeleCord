@@ -187,3 +187,51 @@ export const getChats = async (communityId: string) => {
 		throw error;
 	}
 };
+
+export const saveImageToS3 = async (file: File) => {
+    try {
+        // Read the file as base64
+        const base64 = await readFileAsBase64(file);
+        
+        if (!base64) {
+            throw new Error("Failed to read file as base64");
+        }
+
+        // Create the fileData object with base64 data and filename
+        const fileData = {
+            file_bytes: base64,
+            file_name: file.name,
+        };
+
+        // Send a POST request to upload the file to S3
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/upload`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(fileData),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error("There was a problem with the saveImageToS3 API:", error);
+        throw error;
+    }
+};
+
+// Helper function to read file as base64
+const readFileAsBase64 = (file : File) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result?.toString().replace(/^data:(.*,)?/, ''));
+        reader.onerror = (error) => reject(error);
+    });
+};
