@@ -28,7 +28,6 @@ const CommunityArea = ({
 					communityId={community.CommunityId}
 					image={community.Image || "/images/default.png"}
 					communityName={community.CommunityName}
-					lastMessage={community.LastMessage}
 					time={community.Time}
 					isJoinable={!joinableCommunities.includes(community.CommunityId)}
 					username={user["Username"]}

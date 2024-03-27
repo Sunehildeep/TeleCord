@@ -18,7 +18,6 @@ export const createCommunity = async (communityName: string) => {
 					GroupMembers: [],
 					Chats: [],
 					CommunityName: communityName,
-					LastMessage: "Welcome to the community",
 				}),
 			}
 		);
@@ -279,6 +278,44 @@ export const deleteUserAccount = async (email: string) => {
 		}
 
 		return response;
+	} catch (error) {
+		throw error;
+	}
+}
+
+export const TextToAudio = async (Text: String) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/audio`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					text : Text,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		const body = await response.body;
+		// read the body stream
+		const reader = body?.getReader();
+		let chunks = [];
+		while (true) {
+			const { done, value }: any = await reader?.read();
+			if (done) break;
+			chunks.push(value);
+		}
+		const blob = new Blob(chunks, { type: 'audio/mp3' });
+		const url = URL.createObjectURL(blob);
+		const audio = new Audio(url);
+		audio.play();
+		return body;
 	} catch (error) {
 		throw error;
 	}

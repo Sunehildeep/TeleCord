@@ -9,7 +9,6 @@ const CommunityItem: React.FC<Community> = ({
 	image,
 	communityName,
 	communityId,
-	lastMessage,
 	time,
 	isJoinable,
 	username,
@@ -78,9 +77,6 @@ const CommunityItem: React.FC<Community> = ({
 						<h4 className="text-small font-semibold leading-none text-default-600">
 							{communityName}
 						</h4>
-						<h5 className="text-small tracking-tight text-default-400">
-							{lastMessage}
-						</h5>
 					</div>
 				</div>
 				<h6 className="text-small text-default-400">{time}</h6>
