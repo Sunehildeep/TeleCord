@@ -24,5 +24,5 @@ export default async function middleware(
 }
 
 export const config = {
-	matcher: ["/chat", "/auth"],
+	matcher: ["/chat", "/auth", "/chat/:pathname*"],
 };

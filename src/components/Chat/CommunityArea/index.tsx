@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CommunityItem from "../CommunityItem";
+import { connectToSocketIO } from "@/api/socket-io";
 
 const CommunityArea = ({
 	communities,
@@ -8,6 +9,17 @@ const CommunityArea = ({
 	communities: any;
 	user: any;
 }) => {
+	const [joinableCommunities, setJoinableCommunities] = useState<any>([]);
+	useEffect(() => {
+		const joinableCommunities = communities.map((community: any) => {
+			if (community.GroupMembers.includes(user["Username"])) {
+				return community.CommunityId;
+			}
+		});
+		setJoinableCommunities(joinableCommunities);
+		connectToSocketIO(joinableCommunities);
+	}, [communities]);
+
 	return (
 		<div className="flex-1 w-full h-full p-2 bg-white">
 			{communities.map((community: any) => (
@@ -18,7 +30,7 @@ const CommunityArea = ({
 					communityName={community.CommunityName}
 					lastMessage={community.LastMessage}
 					time={community.Time}
-					isJoinable={!community.GroupMembers.includes(user["Username"])}
+					isJoinable={!joinableCommunities.includes(community.CommunityId)}
 					username={user["Username"]}
 				/>
 			))}

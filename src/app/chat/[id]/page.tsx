@@ -1,7 +1,8 @@
-import React from "react";
+import ChatLayout from "@/components/Chat/ChatLayout";
 
-const Chat = () => {
-	return <></>;
+const ChatCommunity = ({ params }: { params: { id: string } }) => {
+	const { id } = params;
+	return <ChatLayout communityId={id} />;
 };
 
-export default Chat;
+export default ChatCommunity;

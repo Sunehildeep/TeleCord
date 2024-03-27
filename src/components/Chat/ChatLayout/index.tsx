@@ -52,7 +52,7 @@ const ChatLayout = ({ communityId }: { communityId?: string }) => {
 					)}
 				</div>
 				{communityId ? (
-					<ChatArea />
+					<ChatArea communityId={communityId} />
 				) : (
 					<div className="flex-1 bg-gray-100 flex flex-col items-center justify-center">
 						<div className="mt-auto flex flex-col items-center justify-center w-full h-full p-4">

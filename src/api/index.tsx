@@ -15,6 +15,8 @@ export const createCommunity = async (communityName: string) => {
 				},
 				body: JSON.stringify({
 					CommunityId: generateCommunityId(),
+					GroupMembers: [],
+					Chats: [],
 					CommunityName: communityName,
 					LastMessage: "Welcome to the community",
 				}),
@@ -132,6 +134,56 @@ export const leaveCommunity = async (communityId: string, username: string) => {
 		return response;
 	} catch (error) {
 		console.error("There was a problem with the joinCommunity API:", error);
+		throw error;
+	}
+};
+
+export const saveChatMessage = async (message: SendMessage) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/chats`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					ChatId: generateCommunityId(),
+					...message,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return response;
+	} catch (error) {
+		console.error("There was a problem with the saveChatMessage API:", error);
+		throw error;
+	}
+};
+
+export const getChats = async (communityId: string) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/chats/${communityId}`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return response.json();
+	} catch (error) {
+		console.error("There was a problem with the getChats API:", error);
 		throw error;
 	}
 };

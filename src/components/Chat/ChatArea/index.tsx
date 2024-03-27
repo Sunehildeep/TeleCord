@@ -1,42 +1,57 @@
-import {
-	connectToSocketIO,
-	receiveMessage,
-	sendMessage,
-} from "@/api/socket-io";
+import { receiveMessage, sendMessage } from "@/api/socket-io";
 import { Button, Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Avatar } from "@nextui-org/react";
 import { FaLanguage } from "react-icons/fa6";
 import { ImAttachment } from "react-icons/im";
 import { FaFile } from "react-icons/fa";
+import { getChats, saveChatMessage } from "@/api";
+import { useSession } from "next-auth/react";
+import Swal from "sweetalert2";
 
-const ChatArea = () => {
+const ChatArea = ({ communityId }: { communityId: string }) => {
 	const [currentMessage, setCurrentMessage] = useState("");
-	const [receivedMessages, setReceivedMessages] = useState([] as string[]);
+	const [chats, setChats] = useState([] as string[]);
 	const [files, setFiles] = useState<File[] | null>(null);
+	const { data: session }: any = useSession();
 
 	useEffect(() => {
-		connectToSocketIO();
+		getChats(communityId).then((res) => {
+			setChats(res);
+		});
 	}, []);
+
+	useEffect(() => {
+		receiveMessage((msg: any) => {
+			setChats([...chats, msg]);
+		});
+	}, [chats]);
 
 	const handleMessageChange = (event: any) => {
 		setCurrentMessage(event.target.value);
 	};
 
-	const message1: SendMessage = {
-		message: currentMessage,
-		community_id: 1,
-		user_id: 2,
-	};
-
 	const handleSendMessage = () => {
-		sendMessage(message1);
-		setCurrentMessage("");
-		receiveMessage((data: any) => {
-			if (data.community_id === 1) {
-				setReceivedMessages([...receivedMessages, data.message]);
-			}
-		});
+		const msg: SendMessage = {
+			Message: currentMessage,
+			CommunityId: communityId,
+			Username: session?.user?.["Username"],
+			Time: new Date(),
+		};
+		console.log(msg);
+		try {
+			saveChatMessage(msg);
+			sendMessage(msg);
+			setCurrentMessage("");
+		} catch (err) {
+			console.error("Error sending message: ", err);
+			Swal.fire({
+				title: "Error!",
+				text: "There was a problem sending your message",
+				icon: "error",
+				confirmButtonText: "Try again",
+			});
+		}
 	};
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +80,30 @@ const ChatArea = () => {
 		});
 	};
 
+	const formatDate = (date: any) => {
+		const now: any = new Date();
+		const diff = now - date;
+		const diffInDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+		if (diffInDays === 0) {
+			return "Today at " + formatTime(date);
+		} else if (diffInDays === 1) {
+			return "Yesterday at " + formatTime(date);
+		} else {
+			// Format date as you desire
+			return date.toLocaleDateString() + " at " + formatTime(date);
+		}
+	};
+
+	const formatTime = (date: any) => {
+		let hours = date.getHours();
+		const minutes = date.getMinutes().toString().padStart(2, "0");
+		const ampm = hours >= 12 ? "PM" : "AM";
+		hours = hours % 12;
+		hours = hours ? hours : 12; // Convert midnight (0 hours) to 12
+		return hours + ":" + minutes + " " + ampm;
+	};
+
 	return (
 		<div className="w-full h-full flex flex-col">
 			<div className="bg-gray-300 py-[14.5px] px-3 items-center justify-end flex">
@@ -82,17 +121,24 @@ const ChatArea = () => {
 
 			{/* Messaging area */}
 			<div className="p-4 w-full h-full overflow-y-auto">
-				{receivedMessages.length > 0 ? (
-					receivedMessages.map((message: string, index: number) => {
+				{chats.length > 0 ? (
+					chats.map((chat: any, index: number) => {
 						return (
 							<div key={index} className="flex flex-row gap-2 my-4">
 								<div className="text-black my-auto">
 									<Avatar name="Test User" className="w-12 h-12 text-tiny" />
 								</div>
-								<div className="flex flex-col">
-									<span className="text-gray-500">Test User</span>
-									<div className="p-2 bg-primary rounded-lg text-white">
-										{message}
+								<div className="flex flex-row justify-start items-start w-full">
+									<div>
+										<span className="text-gray-500">{chat.Username}</span>
+										<div className="p-2 bg-primary rounded-lg text-white">
+											{chat.Message}
+										</div>
+									</div>
+									<div className="mx-4">
+										<span className="text-gray-500">
+											{formatDate(new Date(chat.Time))}
+										</span>
 									</div>
 								</div>
 								<div className="flex-grow"></div>

@@ -153,7 +153,7 @@ const Auth = () => {
 								onClick={() =>
 									setAuthType(authType === "signup" ? "login" : "signup")
 								}
-								className="text-purple-500"
+								className="text-purple-500 bg-transparent p-0 m-0"
 							>
 								{authType === "signup" ? "Login" : "Sign Up"}
 							</Button>
