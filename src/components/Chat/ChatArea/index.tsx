@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Avatar } from "@nextui-org/react";
 import { FaLanguage } from "react-icons/fa6";
 import { ImAttachment } from "react-icons/im";
-import { FaFile } from "react-icons/fa";
+import { FaFile, FaFileAudio } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
-import { getChats, saveChatMessage, saveImageToS3 } from "@/api";
+import { getChats, saveChatMessage, saveImageToS3, TextToAudio } from "@/api";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 
@@ -15,6 +15,8 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
   const [chats, setChats] = useState([] as string[]);
   const [files, setFiles] = useState<File[] | null>(null);
   const { data: session }: any = useSession();
+
+  const showUserNameChat = session?.user?.Username.charAt(0).toUpperCase();
 
   useEffect(() => {
     getChats(communityId).then((res) => {
@@ -64,6 +66,10 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
 
   const translateMessage = () => {
     // Translate message
+  };
+
+  const handleAudio = async (currentMessage : String) => {
+    await TextToAudio(currentMessage);
   };
 
   const handleSendFiles = async () => {
@@ -165,7 +171,10 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
             return (
               <div key={index} className="flex flex-row gap-2 my-4">
                 <div className="text-black my-auto">
-                  <Avatar name="Test User" className="w-12 h-12 text-tiny" />
+                  <Avatar
+                    name={showUserNameChat}
+                    className="w-12 h-12 text-tiny"
+                  />
                 </div>
                 <div className="flex flex-row justify-start items-start w-full">
                   <div>
@@ -181,7 +190,7 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
                             className="text-white"
                           >
                             <div key={index} className="flex gap-2">
-                              <span className="text-gray-500 flex flex-row gap-2 items-center justify-start">
+                              <span className="text-white flex flex-row gap-2 items-center justify-start">
                                 <FaFile />
                                 {chat.Message.substring(46)}
                                 <MdFileDownload />
@@ -196,9 +205,16 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
                           />
                         )
                       ) : (
-                        <div className="p-2 bg-primary rounded-lg text-white">
-                          {chat.Message}
-                        </div>
+                        <>
+                          <div className="flex items-center justify-center">
+                            <div className="p-2 bg-primary rounded-lg text-white flex-grow">
+                              {chat.Message}
+                            </div>
+                            <div className="ml-2 cursor-pointer">
+                              <FaFileAudio onClick={() => handleAudio(chat.Message)}/>
+                            </div>
+                          </div>
+                        </>
                       )}
                     </div>
                   </div>
