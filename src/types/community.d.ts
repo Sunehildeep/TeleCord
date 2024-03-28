@@ -5,4 +5,5 @@ interface Community {
 	time: string;
 	isJoinable: boolean;
 	username: string;
+	isActive: boolean;
 }

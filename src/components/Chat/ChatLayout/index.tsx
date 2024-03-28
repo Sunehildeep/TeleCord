@@ -32,32 +32,45 @@ const ChatLayout = ({ communityId }: { communityId?: string }) => {
 	return loading ? (
 		<Loader />
 	) : (
-		<Card className="m-4 h-[90vh]">
-			<CardBody className="flex flex-row w-full h-full p-0">
-				<div className="flex items-start flex-col w-[35%] border-r-[1px]">
+		<Card className="m-4 h-[90vh] bg-primary">
+			<CardBody className=" flex flex-row w-full h-full p-0">
+				<div className="flex items-start flex-col w-[35%] border-r-[1px] border-gray-700">
 					<ChatHeader />
 					<Search onChange={setResults} />
 					{isSearching ? (
 						searchResults.length ? (
-							<CommunityArea communities={searchResults} user={session?.user} />
+							<CommunityArea
+								communityId={communityId}
+								communities={searchResults}
+								user={session?.user}
+							/>
 						) : (
-							<div className="flex-1 w-full h-full p-2 bg-white">
-								<h1 className="text-center text-lg font-light">
+							<div className="flex-1 w-full h-full p-2 bg-primary">
+								<h1 className="text-center text-lg font-light text-white">
 									No results found
 								</h1>
 							</div>
 						)
 					) : (
-						<CommunityArea communities={communitiesData} user={session?.user} />
+						<CommunityArea
+							communityId={communityId}
+							communities={communitiesData}
+							user={session?.user}
+						/>
 					)}
 				</div>
 				{communityId ? (
-					<ChatArea communityId={communityId} communityDetails={
-						communitiesData.filter((community: any) => community.CommunityId.toString() === communityId)[0]
-					}
+					<ChatArea
+						communityId={communityId}
+						communityDetails={
+							communitiesData.filter(
+								(community: any) =>
+									community.CommunityId.toString() === communityId
+							)[0]
+						}
 					/>
 				) : (
-					<div className="flex-1 bg-gray-100 flex flex-col items-center justify-center">
+					<div className="bg-primary text-gray-300 flex-1 bg-gray-100 flex flex-col items-center justify-center">
 						<div className="mt-auto flex flex-col items-center justify-center w-full h-full p-4">
 							<h1 className="text-2xl text-center font-light">
 								Welcome to Telecord

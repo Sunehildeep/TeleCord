@@ -22,7 +22,6 @@ const UserProfileModal = ({
 	onOpen,
 	onOpenChange,
 }: UserProfileModalProps) => {
-
 	const { data: session }: any = useSession();
 
 	const [newProfileImage, setNewProfileImage] = useState(
@@ -34,14 +33,20 @@ const UserProfileModal = ({
 		if (file) {
 			saveImageToS3(file, session.user.Username).then((res) => {
 				setNewProfileImage(res.fileUrl);
-				setProfilePictureUser(session.user.Email, res.fileUrl).then((res) => {
-				});
+				setProfilePictureUser(session.user.Email, res.fileUrl).then(
+					(res) => {}
+				);
 			});
 		}
 	};
 
 	return (
-		<Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior="inside">
+		<Modal
+			isOpen={isOpen}
+			onOpenChange={onOpenChange}
+			scrollBehavior="inside"
+			className="bg-primary text-gray-300"
+		>
 			<ModalContent>
 				{(onClose) => (
 					<>
@@ -61,7 +66,7 @@ const UserProfileModal = ({
 									/>
 									<label
 										htmlFor="customFileInput"
-										className=" text-xs bg-gray-200 hover:bg-gray-300 text-black py-2 px-4 my-4 rounded cursor-pointer"
+										className="text-xs bg-secondary text-gray-300 text-black py-2 px-4 my-4 rounded cursor-pointer"
 									>
 										Edit Profile Image
 									</label>
@@ -69,7 +74,7 @@ const UserProfileModal = ({
 
 								<div className="flex flex-col">
 									<Button
-										className="block w-2 mt-4 m-auto border-1 bg-white text-black hover:bg-gray-300"
+										className="block w-2 mt-4 m-auto bg-secondary text-gray-300"
 										onClick={() => signOut()}
 									>
 										Logout

@@ -5,9 +5,11 @@ import { connectToSocketIO } from "@/api/socket-io";
 const CommunityArea = ({
 	communities,
 	user,
+	communityId,
 }: {
 	communities: any;
 	user: any;
+	communityId: string | undefined;
 }) => {
 	const [joinableCommunities, setJoinableCommunities] = useState<any>([]);
 	useEffect(() => {
@@ -21,7 +23,7 @@ const CommunityArea = ({
 	}, [communities]);
 
 	return (
-		<div className="flex-1 w-full h-full p-2 bg-white">
+		<div className="flex-1 w-full h-full p-2 bg-primary">
 			{communities.map((community: any) => (
 				<CommunityItem
 					key={community.CommunityId}
@@ -31,6 +33,7 @@ const CommunityArea = ({
 					time={community.Time}
 					isJoinable={!joinableCommunities.includes(community.CommunityId)}
 					username={user["Username"]}
+					isActive={communityId === community.CommunityId.toString()}
 				/>
 			))}
 		</div>

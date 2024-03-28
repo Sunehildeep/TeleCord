@@ -31,30 +31,24 @@ const Search = ({
 			label="Search"
 			radius="lg"
 			classNames={{
-				label: "text-black/50 dark:text-white/90",
+				label: ["!text-gray-300"],
 				input: [
 					"bg-transparent",
-					"text-black/90 dark:text-white/90",
-					"placeholder:text-default-700/50 dark:placeholder:text-white/60",
+					"!text-gray-300",
+					"placeholder:text-gray-300",
 				],
-				innerWrapper: "bg-transparent",
+				innerWrapper: ["bg-transparent"],
 				inputWrapper: [
-					"shadow-md",
-					"bg-default-200/50",
-					"dark:bg-default/60",
-					"backdrop-blur-xl",
-					"backdrop-saturate-200",
-					"hover:bg-default-200/70",
-					"dark:hover:bg-default/70",
-					"group-data-[focused=true]:bg-default-200/50",
-					"dark:group-data-[focused=true]:bg-default/60",
+					"bg-accent",
+					"group-data-[focus]:bg-accent/80",
+					"group-data-[hover]:bg-accent/80",
 					"!cursor-text",
 				],
-				base: "p-2 border-b-[1px]",
+				base: ["bg-transparent", "text-gray-300", "p-2"],
 			}}
 			placeholder="Type to search..."
 			startContent={
-				<FiSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+				<FiSearch className="text-gray-300 mb-0.5 text-slate-400 pointer-events-none flex-shrink-0" />
 			}
 			onChange={(e) => setSearch(e.target.value)}
 		/>

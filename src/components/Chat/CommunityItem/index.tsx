@@ -12,6 +12,7 @@ const CommunityItem: React.FC<Community> = ({
 	time,
 	isJoinable,
 	username,
+	isActive,
 }) => {
 	const onPressJoin = (e: React.MouseEvent<HTMLButtonElement>) => {
 		joinCommunity(communityId, username).then((res) => {
@@ -61,20 +62,19 @@ const CommunityItem: React.FC<Community> = ({
 
 	return (
 		<Card
-			className={`mb-2 w-full hover:bg-gray-100 ${
+			className={`${
+				isActive ? "bg-secondary" : "bg-primary"
+			} w-full hover:bg-secondary text-gray-300 hover:text-white my-2 ${
 				isJoinable ? "cursor-default" : "cursor-pointer"
 			}`}
-			shadow="sm"
-			isBlurred
-			isHoverable
 			isPressable={!isJoinable}
 			onPress={() => !isJoinable && router.push(`/chat/${communityId}`)}
 		>
-			<CardHeader className="justify-between p-3">
+			<CardHeader className="justify-between">
 				<div className="flex gap-5">
 					<Image src={image} alt={communityName} width={50} height={50} />
 					<div className="flex flex-col gap-1 items-start justify-center">
-						<h4 className="text-small font-semibold leading-none text-default-600">
+						<h4 className="text-small font-semibold leading-none">
 							{communityName}
 						</h4>
 					</div>
@@ -85,7 +85,11 @@ const CommunityItem: React.FC<Community> = ({
 						Join
 					</Button>
 				) : (
-					<Button className="mt-2" color="secondary" onClick={onPressLeave}>
+					<Button
+						className="mt-2"
+						color={`${isActive ? "primary" : "secondary"}`}
+						onClick={onPressLeave}
+					>
 						Leave
 					</Button>
 				)}
