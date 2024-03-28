@@ -53,6 +53,7 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 				isOpen={isOpen}
 				onOpenChange={onOpenChange}
 				scrollBehavior="inside"
+				className="bg-primary text-gray-300"
 			>
 				<ModalContent>
 					{(onClose) => (
@@ -79,6 +80,22 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 												message: "Min length is 2",
 											},
 										})}
+										classNames={{
+											label: ["!text-gray-300"],
+											input: [
+												"bg-transparent",
+												"!text-gray-300",
+												"placeholder:text-gray-300",
+											],
+											innerWrapper: ["bg-transparent"],
+											inputWrapper: [
+												"bg-accent",
+												"group-data-[focus]:bg-accent/80",
+												"group-data-[hover]:bg-accent/80",
+												"!cursor-text",
+											],
+											base: ["bg-transparent", "text-gray-300", "p-2"],
+										}}
 									/>
 									<div className="text-red-500">
 										{errors.communityName?.message?.toString()}
@@ -86,11 +103,16 @@ const AddCommunityModal = ({ isOpen, onOpen, onOpenChange }: ModalProps) => {
 								</ModalBody>
 
 								<ModalFooter>
-									<Button type="submit" onPress={onClose}>
+									<Button
+										type="submit"
+										onPress={onClose}
+										className="bg-secondary text-gray-300"
+									>
 										Create
 									</Button>
 									<Button
 										type="reset"
+										className="bg-accent text-gray-300"
 										onPress={() => {
 											reset();
 										}}
