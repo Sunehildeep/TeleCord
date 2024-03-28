@@ -16,6 +16,8 @@ export const createCommunity = async (communityName: string) => {
 				body: JSON.stringify({
 					CommunityId: generateCommunityId(),
 					GroupMembers: [],
+					CreatedDate: new Date(),
+					CommunityImage: "/images/default.png",
 					Chats: [],
 					CommunityName: communityName,
 				}),

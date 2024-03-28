@@ -4,17 +4,26 @@ import React, { useEffect, useState } from "react";
 import { Avatar } from "@nextui-org/react";
 import { FaLanguage } from "react-icons/fa6";
 import { ImAttachment } from "react-icons/im";
-import { FaFile, FaFileAudio } from "react-icons/fa";
+import { FaFile, FaFileAudio, FaSearch } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
 import { getChats, saveChatMessage, saveImageToS3, TextToAudio } from "@/api";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
+import CommunityDetails from "@/components/Modals/CommunityDetails";
+import { FiSearch } from "react-icons/fi";
 
-const ChatArea = ({ communityId }: { communityId: string }) => {
+const ChatArea = ({
+  communityId,
+  communityDetails,
+}: {
+  communityId: string;
+  communityDetails: any;
+}) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [chats, setChats] = useState([] as string[]);
   const [files, setFiles] = useState<File[] | null>(null);
   const { data: session }: any = useSession();
+  const [search, setSearch] = useState("");
 
   const showUserNameChat = session?.user?.Username.charAt(0).toUpperCase();
 
@@ -68,7 +77,7 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
     // Translate message
   };
 
-  const handleAudio = async (currentMessage : String) => {
+  const handleAudio = async (currentMessage: String) => {
     await TextToAudio(currentMessage);
   };
 
@@ -149,9 +158,55 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
     return hours + ":" + minutes + " " + ampm;
   };
 
+  useEffect(() => {
+    if (search.length > 0) {
+      const filteredChats = chats.filter((chat: any) =>
+        chat.Message.toLowerCase().includes(search.toLowerCase())
+      );
+      setChats(filteredChats);
+    } else {
+      getChats(communityId).then((res) => {
+        setChats(res);
+      });
+    }
+  }, [search]);
+
   return (
     <div className="w-full h-full flex flex-col">
-      <div className="bg-gray-300 py-[14.5px] px-3 items-center justify-end flex">
+      <div className="bg-gray-300 py-[14.5px] px-3 items-center justify-between flex">
+        <Input
+          value={search}
+          label="Search Messages"
+          radius="lg"
+          classNames={{
+            base: "w-3/16",
+            label: "text-black/50 dark:text-white/90",
+            input: [
+              "bg-transparent",
+              "text-black/90 dark:text-white/90",
+              "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+            ],
+            innerWrapper: "bg-transparent",
+            inputWrapper: [
+              "backdrop-blur-xl",
+              "backdrop-saturate-200",
+              "hover:bg-default-200/70",
+              "dark:hover:bg-default/70",
+              "group-data-[focused=true]:bg-default-200/50",
+              "dark:group-data-[focused=true]:bg-default/60",
+              "!cursor-text",
+            ],
+          }}
+          placeholder="Type to search..."
+          startContent={
+            <FiSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+          }
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        {/*HUYEN ANH NHAP*/}
+        <CommunityDetails communityDetails={communityDetails} />
+
         {/* Translate button */}
         <Button
           aria-label="Translate message"
@@ -161,7 +216,6 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
         >
           <FaLanguage size={32} />
         </Button>
-        {/* other menu items here */}
       </div>
 
       {/* Messaging area */}
@@ -211,7 +265,9 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
                               {chat.Message}
                             </div>
                             <div className="ml-2 cursor-pointer">
-                              <FaFileAudio onClick={() => handleAudio(chat.Message)}/>
+                              <FaFileAudio
+                                onClick={() => handleAudio(chat.Message)}
+                              />
                             </div>
                           </div>
                         </>
