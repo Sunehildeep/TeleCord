@@ -4,18 +4,26 @@ import React, { useEffect, useState } from "react";
 import { Avatar } from "@nextui-org/react";
 import { FaLanguage } from "react-icons/fa6";
 import { ImAttachment } from "react-icons/im";
-import { FaFile, FaFileAudio, FaSearch  } from "react-icons/fa";
+import { FaFile, FaFileAudio, FaSearch } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
 import { getChats, saveChatMessage, saveImageToS3, TextToAudio } from "@/api";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
+import CommunityDetails from "@/components/Modals/CommunityDetails";
+import { FiSearch } from "react-icons/fi";
 
-const ChatArea = ({ communityId }: { communityId: string }) => {
+const ChatArea = ({
+  communityId,
+  communityDetails,
+}: {
+  communityId: string;
+  communityDetails: any;
+}) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [chats, setChats] = useState([] as string[]);
   const [files, setFiles] = useState<File[] | null>(null);
-  const [showCommunityDetails, setShowCommunityDetails] = useState(false);
   const { data: session }: any = useSession();
+  const [search, setSearch] = useState("");
 
   const showUserNameChat = session?.user?.Username.charAt(0).toUpperCase();
 
@@ -69,7 +77,7 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
     // Translate message
   };
 
-  const handleAudio = async (currentMessage : String) => {
+  const handleAudio = async (currentMessage: String) => {
     await TextToAudio(currentMessage);
   };
 
@@ -150,78 +158,56 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
     return hours + ":" + minutes + " " + ampm;
   };
 
-  const toggleCommunityDetails = () => {
-    setShowCommunityDetails(!showCommunityDetails);
-  };
-
-
-  const [communityDetails, setCommunityDetails] = useState({
-    name: "Cloud ML Group 6",
-    createdDate: "2024-01-01",
-    users: ["Garv", "Minyoung", "Alix","Sunehildeep", "Huyen Anh"],
-  });
-
+  useEffect(() => {
+    if (search.length > 0) {
+      const filteredChats = chats.filter((chat: any) =>
+        chat.Message.toLowerCase().includes(search.toLowerCase())
+      );
+      setChats(filteredChats);
+    } else {
+      getChats(communityId).then((res) => {
+        setChats(res);
+      });
+    }
+  }, [search]);
 
   return (
-    
     <div className="w-full h-full flex flex-col">
-    
       <div className="bg-gray-300 py-[14.5px] px-3 items-center justify-between flex">
-      <div className="flex-1 flex items-center max-w-xs">
-      <Input
+        <Input
+          value={search}
+          label="Search Messages"
+          radius="lg"
           classNames={{
-            base: "max-w-full sm:max-w-[10rem] h-10",
-            mainWrapper: "h-full",
-            input: "text-small",
-            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+            base: "w-3/16",
+            label: "text-black/50 dark:text-white/90",
+            input: [
+              "bg-transparent",
+              "text-black/90 dark:text-white/90",
+              "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+            ],
+            innerWrapper: "bg-transparent",
+            inputWrapper: [
+              "backdrop-blur-xl",
+              "backdrop-saturate-200",
+              "hover:bg-default-200/70",
+              "dark:hover:bg-default/70",
+              "group-data-[focused=true]:bg-default-200/50",
+              "dark:group-data-[focused=true]:bg-default/60",
+              "!cursor-text",
+            ],
           }}
           placeholder="Type to search..."
-          size="sm"
-          startContent={<FaSearch size={28} />}
-          type="search"
+          startContent={
+            <FiSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+          }
+          onChange={(e) => setSearch(e.target.value)}
         />
-        </div>
-        
-        {/* <div></div> */}
 
         {/*HUYEN ANH NHAP*/}
-          <div onClick={toggleCommunityDetails} className="cursor-pointer text-white bg-gray-300  flex-1 text-center ">
-          {communityDetails.name} 
-          </div>
-
-        {showCommunityDetails && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/4">
-            <h2 className="text-xl font-bold mb-4 text-center">Group Details</h2>
-            <div className="mb-4">
-              <img src="../../images/default.png" alt="Group" className="mx-auto mb-4" style={{ width: '80px', height: '80px' }} />
-              <h3 className="text-lg font-bold text-center">{communityDetails.name}</h3>
-              <p className="text-sm text-center">Group Created: {communityDetails.createdDate}</p>
-            </div>
-            <p className="font-bold">Members:</p>
-            <ul className="list-disc ml-5 mb-4">
-              {communityDetails.users.map((user, index) => (
-                <li key={index} className="flex justify-between items-center">
-                  {user}
-                  <span className="cursor-pointer">✕</span> 
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-col space-y-2">
-              <button className="bg-teal-500 text-white py-2 px-4 rounded hover:bg-teal-600">Add User</button>
-              <button className="bg-teal-500 text-white py-2 px-4 rounded hover:bg-teal-600">Exit Group</button>
-            </div>
-            <button onClick={toggleCommunityDetails} className="mt-4 bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded text-center w-full">
-              Close
-            </button>
-          </div>
-        </div>
-        )}
-        <div className="flex-1 flex justify-end">
-
+        <CommunityDetails communityDetails={communityDetails} />
 
         {/* Translate button */}
-
         <Button
           aria-label="Translate message"
           title="Translate message"
@@ -230,8 +216,6 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
         >
           <FaLanguage size={32} />
         </Button>
-     
-      </div>
       </div>
 
       {/* Messaging area */}
@@ -281,7 +265,9 @@ const ChatArea = ({ communityId }: { communityId: string }) => {
                               {chat.Message}
                             </div>
                             <div className="ml-2 cursor-pointer">
-                              <FaFileAudio onClick={() => handleAudio(chat.Message)}/>
+                              <FaFileAudio
+                                onClick={() => handleAudio(chat.Message)}
+                              />
                             </div>
                           </div>
                         </>

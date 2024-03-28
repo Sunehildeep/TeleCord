@@ -79,7 +79,7 @@ export const GetUserAPI: (email: string) => Promise<Response> = async (
 		const res = await response.json();
 
 		if (!response.ok) {
-			throw new Error(res.error);
+			return null;
 		}
 
 		return res.user;
