@@ -90,7 +90,7 @@ const Auth = () => {
 
 	return (
 		<div className="flex justify-center items-center h-screen bg-purple-100">
-			<Card className="w-full max-w-md p-8 rounded-lg shadow-lg bg-white">
+			<Card className="w-full max-w-md p-8 rounded-lg shadow-lg bg-primary text-gray-300">
 				<CardHeader className="text-3xl font-bold text-center mb-8">
 					{authType === "signup" ? "Sign Up" : "Login"}
 				</CardHeader>
@@ -137,14 +137,14 @@ const Auth = () => {
 						<Button
 							type="submit"
 							aria-label="Submit"
-							className="m-auto flex w-[90%] bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+							className="m-auto flex w-[90%] bg-secondary hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
 						>
 							{authType === "signup" ? "Sign Up" : "Login"}
 						</Button>
 					</form>
 				</CardBody>
 				<CardFooter className="mt-4 text-center">
-					<p className="text-sm text-gray-600">
+					<p className="text-sm text-gray-300">
 						{authType === "signup"
 							? "Already have an account?"
 							: "Don't have an account?"}{" "}

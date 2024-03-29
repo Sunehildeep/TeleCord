@@ -23,7 +23,7 @@ const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	return (
-		<Navbar onMenuOpenChange={setIsMenuOpen} className="bg-gray-700 shadow-md">
+		<Navbar onMenuOpenChange={setIsMenuOpen} className="bg-primary shadow-md">
 			<NavbarContent>
 				<NavbarMenuToggle
 					aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -37,8 +37,13 @@ const Header = () => {
 			<NavbarContent justify="end">
 				<NavbarItem className="hidden lg:flex gap-4">
 					{navItems.map((item: any, index: number) => (
-						<Button key={`${item.name}-${index}`}>
-							<Link color="foreground" href={item.link} size="lg">
+						<Button key={`${item.name}-${index}`} className="bg-secondary">
+							<Link
+								color="foreground"
+								className="text-gray-300"
+								href={item.link}
+								size="lg"
+							>
 								{item.name}
 							</Link>
 						</Button>

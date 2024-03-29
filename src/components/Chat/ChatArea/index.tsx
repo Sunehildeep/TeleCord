@@ -1,16 +1,22 @@
 import { receiveMessage, sendMessage } from "@/api/socket-io";
-import { Button, Image, Input } from "@nextui-org/react";
+import { Image, Input, Progress } from "@nextui-org/react";
 import React, { useEffect, useRef, useState } from "react";
 import { Avatar } from "@nextui-org/react";
-import { FaLanguage } from "react-icons/fa6";
 import { ImAttachment } from "react-icons/im";
-import { FaFile, FaFileAudio, FaSearch } from "react-icons/fa";
+import { FaFile, FaFileAudio } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
-import { getChats, saveChatMessage, saveImageToS3, TextToAudio } from "@/api";
+import {
+	getChats,
+	saveChatMessage,
+	saveImageToS3,
+	TextToAudio,
+	TranslateChats,
+} from "@/api";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import CommunityDetails from "@/components/Modals/CommunityDetails";
 import { FiSearch } from "react-icons/fi";
+import { PiTranslateFill } from "react-icons/pi";
 
 const ChatArea = ({
 	communityId,
@@ -25,10 +31,13 @@ const ChatArea = ({
 	const { data: session }: any = useSession();
 	const [search, setSearch] = useState("");
 	const chatArea = useRef<HTMLDivElement>(null);
+	const [isTranslating, setIsTranslating] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		getChats(communityId).then((res) => {
 			setChats(res);
+			setIsLoading(false);
 			chatArea.current?.scrollIntoView({ behavior: "smooth" });
 		});
 	}, []);
@@ -50,8 +59,9 @@ const ChatArea = ({
 			CommunityId: communityId,
 			Username: session?.user?.["Username"],
 			Time: new Date(),
+			ProfilePicture: session?.user?.["ProfilePicture"],
 		};
-		console.log(msg);
+
 		try {
 			if (currentMessage.length === 0) return;
 			saveChatMessage(msg);
@@ -75,8 +85,12 @@ const ChatArea = ({
 		}
 	};
 
-	const translateMessage = () => {
-		// Translate message
+	const translateMessage = async () => {
+		setIsTranslating(true);
+		TranslateChats(chats).then((res) => {
+			setChats(res);
+			setIsTranslating(false);
+		});
 	};
 
 	const handleAudio = async (currentMessage: String) => {
@@ -99,6 +113,7 @@ const ChatArea = ({
 						CommunityId: communityId,
 						Username: session?.user?.["Username"],
 						Time: new Date(),
+						ProfilePicture: session?.user?.["ProfilePicture"],
 					};
 
 					// Save the chat message with the filename included
@@ -173,7 +188,20 @@ const ChatArea = ({
 		}
 	}, [search]);
 
-	return (
+	return isTranslating || isLoading ? (
+		<div className="flex flex-col items-center justify-center w-full h-full p-4">
+			<Progress
+				size="sm"
+				isIndeterminate
+				color="secondary"
+				aria-label={isTranslating ? "Translating..." : "Loading chats..."}
+				className="max-w-md"
+			/>
+			<span className="text-gray-300">
+				{isTranslating ? "Translating..." : "Loading chats..."}
+			</span>
+		</div>
+	) : (
 		<div className="w-full h-full flex flex-col bg-primary">
 			<div className="py-[8px] px-3 items-baseline justify-between flex">
 				{/*HUYEN ANH NHAP*/}
@@ -214,10 +242,17 @@ const ChatArea = ({
 							return (
 								<div key={index} className="flex flex-row gap-2 my-4">
 									<div className="text-black my-auto mx-2">
-										<Avatar
-											name={chat.Username.split("")[0]}
-											className="w-12 h-12 text-tiny"
-										/>
+										{session?.user?.["ProfilePicture"] ? (
+											<Avatar
+												src={chat.ProfilePicture}
+												className="w-12 h-12 text-tiny"
+											/>
+										) : (
+											<Avatar
+												name={chat.Username.split("")[0]}
+												className="w-12 h-12 text-tiny"
+											/>
+										)}
 									</div>
 									<div className="flex flex-row justify-start items-start w-full">
 										<div>
@@ -337,7 +372,14 @@ const ChatArea = ({
 					}}
 					placeholder="Type to message..."
 					endContent={
-						<div className="flex items-center m-auto justify-center">
+						<div className="flex items-center m-auto justify-center gap-2">
+							{/* translate */}
+							<span
+								className="text-gray-500 cursor-pointer"
+								onClick={translateMessage}
+							>
+								<PiTranslateFill className="text-[30px] text-gray-500 cursor-pointer" />
+							</span>
 							<label htmlFor="file-upload">
 								<ImAttachment className="text-[22px] text-gray-500 cursor-pointer" />
 							</label>

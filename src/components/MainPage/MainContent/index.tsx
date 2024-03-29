@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 const MainContent = () => {
 	return (
-		<div className="bg-purple-100">
-			<section className="max-w-2xl mx-auto py-8 ">
+		<div className="bg-purple-100 min-h-screen flex flex-col justify-center items-center">
+			<section className="max-w-3xl mx-auto py-8">
 				<h2 className="text-3xl font-bold mb-4 text-center">
 					Welcome to Telecord
 				</h2>
@@ -83,7 +83,7 @@ const MainContent = () => {
 						Join the platform that’s redefining campus communication.
 					</p>
 					<Link href="/auth">
-						<Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full mt-6 transition duration-300 ease-in-out transform hover:scale-105">
+						<Button className="bg-secondary hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full mt-6 transition duration-300 ease-in-out transform hover:scale-105">
 							Sign Up Now
 						</Button>
 					</Link>

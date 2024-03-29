@@ -1,7 +1,13 @@
 "use client";
-import { joinCommunity, leaveCommunity } from "@/api";
+import {
+	UpdateCommunityImage,
+	joinCommunity,
+	leaveCommunity,
+	saveImageToS3,
+} from "@/api";
 import { GetUserAPI } from "@/api/authentication";
 import {
+	Avatar,
 	Button,
 	Chip,
 	Input,
@@ -14,7 +20,7 @@ import {
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import Swal from "sweetalert2";
 
@@ -22,10 +28,15 @@ const CommunityDetails = ({ communityDetails }: any) => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const { data: session }: any = useSession();
 	const [search, setSearch] = useState("");
+	const [newCommunityImage, setNewCommunityImage] = useState("");
+
+	useEffect(() => {
+		setNewCommunityImage(communityDetails?.CommunityImage);
+	}, [communityDetails]);
 
 	const addMember = (communityId: string, username: string) => {
 		setSearch("");
-		GetUserAPI(search).then((res: any) => {
+		GetUserAPI(username).then((res: any) => {
 			if (!res) {
 				Swal.fire({
 					title: "Error!",
@@ -66,6 +77,34 @@ const CommunityDetails = ({ communityDetails }: any) => {
 		});
 	};
 
+	const handleCommunityImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (file) {
+			saveImageToS3(file, communityDetails.CommunityName).then((res) => {
+				setNewCommunityImage(res.fileUrl);
+				UpdateCommunityImage(communityDetails.CommunityId, res.fileUrl).then(
+					(res) => {
+						if (res.ok) {
+							Swal.fire({
+								title: "Success!",
+								text: "Community image updated successfully!",
+								icon: "success",
+								confirmButtonText: "OK",
+							});
+						} else {
+							Swal.fire({
+								title: "Error!",
+								text: "Updating community image failed!",
+								icon: "error",
+								confirmButtonText: "OK",
+							});
+						}
+					}
+				);
+			});
+		}
+	};
+
 	const removeMember = (communityId: string, username: string) => {
 		leaveCommunity(communityId, username).then((res) => {
 			if (res.ok) {
@@ -90,7 +129,11 @@ const CommunityDetails = ({ communityDetails }: any) => {
 
 	return (
 		<>
-			<h2 onClick={onOpen} className="mx-4 cursor-pointer text-white text-xl">
+			<h2
+				onClick={onOpen}
+				className="mx-4 cursor-pointer text-white text-xl flex flex-row items-center gap-2 m-auto"
+			>
+				<Avatar src={newCommunityImage} size="sm" />
 				{communityDetails?.CommunityName}
 			</h2>
 			<Modal
@@ -109,17 +152,21 @@ const CommunityDetails = ({ communityDetails }: any) => {
 								</h2>
 							</ModalHeader>
 							<ModalBody>
-								<div className="mb-4">
-									<Image
-										width="80"
-										height="80"
-										src={
-											communityDetails?.CommunityImage || "/images/default.png"
-										}
-										alt="Community"
-										className="mx-auto mb-4"
-										style={{ width: "80px", height: "80px" }}
+								<div className="mb-4 m-auto flex flex-col justify-center items-center">
+									<Avatar size="lg" src={newCommunityImage} alt="Community" />
+									<input
+										type="file"
+										accept="image/*"
+										onChange={handleCommunityImage}
+										className="hidden"
+										id="customFileInput"
 									/>
+									<label
+										htmlFor="customFileInput"
+										className="text-xs bg-secondary text-gray-300 text-black py-2 px-4 my-4 rounded cursor-pointer"
+									>
+										Edit Community Image
+									</label>
 									<h3 className="text-lg font-bold text-center">
 										{communityDetails?.CommunityName}
 									</h3>

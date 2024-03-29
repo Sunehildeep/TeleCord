@@ -1,6 +1,5 @@
 import React from "react";
-import { Card, CardHeader, Button } from "@nextui-org/react";
-import Image from "next/image";
+import { Card, CardHeader, Button, Avatar } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { joinCommunity, leaveCommunity } from "@/api";
 import Swal from "sweetalert2";
@@ -72,7 +71,7 @@ const CommunityItem: React.FC<Community> = ({
 		>
 			<CardHeader className="justify-between">
 				<div className="flex gap-5">
-					<Image src={image} alt={communityName} width={50} height={50} />
+					<Avatar src={image} alt={communityName} size="lg" />
 					<div className="flex flex-col gap-1 items-start justify-center">
 						<h4 className="text-small font-semibold leading-none">
 							{communityName}
