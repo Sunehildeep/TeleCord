@@ -70,7 +70,7 @@ const CommunityItem: React.FC<Community> = ({
 			onPress={() => !isJoinable && router.push(`/chat/${communityId}`)}
 		>
 			<CardHeader className="flex-col lg:flex-row lg:justify-betwee">
-				<div className="flex gap-5">
+				<div className="flex gap-5 xl:gap-5">
 					<Avatar src={image} alt={communityName} size="lg" />
 
 					<div className="flex flex-col gap-1 items-start justify-center">
