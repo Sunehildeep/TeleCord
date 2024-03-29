@@ -28,7 +28,7 @@ const CommunityArea = ({
 				<CommunityItem
 					key={community.CommunityId}
 					communityId={community.CommunityId}
-					image={community.Image || "/images/default.png"}
+					image={community.CommunityImage}
 					communityName={community.CommunityName}
 					time={community.Time}
 					isJoinable={!joinableCommunities.includes(community.CommunityId)}

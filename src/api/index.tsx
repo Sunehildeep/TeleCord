@@ -188,53 +188,57 @@ export const getChats = async (communityId: string) => {
 };
 
 export const saveImageToS3 = async (file: File, fileName?: String) => {
-    try {
-        // Read the file as base64
-        const base64 = await readFileAsBase64(file);
-        
-        if (!base64) {
-            throw new Error("Failed to read file as base64");
-        }
+	try {
+		// Read the file as base64
+		const base64 = await readFileAsBase64(file);
 
-        // Create the fileData object with base64 data and filename
-        const fileData = {
-            file_bytes: base64,
+		if (!base64) {
+			throw new Error("Failed to read file as base64");
+		}
+
+		// Create the fileData object with base64 data and filename
+		const fileData = {
+			file_bytes: base64,
 			file_name: `${fileName}.png` || file.name,
-        };
+		};
 
-        // Send a POST request to upload the file to S3
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/upload`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(fileData),
-            }
-        );
+		// Send a POST request to upload the file to S3
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/upload`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(fileData),
+			}
+		);
 
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
 
-        return response.json();
-    } catch (error) {
-        throw error;
-    }
+		return response.json();
+	} catch (error) {
+		throw error;
+	}
 };
 
 // Helper function to read file as base64
-const readFileAsBase64 = (file : File) => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result?.toString().replace(/^data:(.*,)?/, ''));
-        reader.onerror = (error) => reject(error);
-    });
+const readFileAsBase64 = (file: File) => {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () =>
+			resolve(reader.result?.toString().replace(/^data:(.*,)?/, ""));
+		reader.onerror = (error) => reject(error);
+	});
 };
 
-export const setProfilePictureUser = async (email: string, profilePicture: string) => {
+export const setProfilePictureUser = async (
+	email: string,
+	profilePicture: string
+) => {
 	try {
 		const response = await fetch(
 			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/updateUserProfilePicture`,
@@ -244,8 +248,8 @@ export const setProfilePictureUser = async (email: string, profilePicture: strin
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					Email : email,
-					ProfilePicture : profilePicture,
+					Email: email,
+					ProfilePicture: profilePicture,
 				}),
 			}
 		);
@@ -258,7 +262,7 @@ export const setProfilePictureUser = async (email: string, profilePicture: strin
 	} catch (error) {
 		throw error;
 	}
-}
+};
 
 export const deleteUserAccount = async (email: string) => {
 	try {
@@ -270,7 +274,7 @@ export const deleteUserAccount = async (email: string) => {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					Email : email,
+					Email: email,
 				}),
 			}
 		);
@@ -283,7 +287,7 @@ export const deleteUserAccount = async (email: string) => {
 	} catch (error) {
 		throw error;
 	}
-}
+};
 
 export const TextToAudio = async (Text: String) => {
 	try {
@@ -295,7 +299,7 @@ export const TextToAudio = async (Text: String) => {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					text : Text,
+					text: Text,
 				}),
 			}
 		);
@@ -313,7 +317,7 @@ export const TextToAudio = async (Text: String) => {
 			if (done) break;
 			chunks.push(value);
 		}
-		const blob = new Blob(chunks, { type: 'audio/mp3' });
+		const blob = new Blob(chunks, { type: "audio/mp3" });
 		const url = URL.createObjectURL(blob);
 		const audio = new Audio(url);
 		audio.play();
@@ -321,4 +325,58 @@ export const TextToAudio = async (Text: String) => {
 	} catch (error) {
 		throw error;
 	}
-}
+};
+
+export const UpdateCommunityImage = async (
+	communityId: string,
+	communityImage: string
+) => {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/updateCommunityImage`,
+			{
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					CommunityId: communityId,
+					CommunityImage: communityImage,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		return response;
+	} catch (error) {
+		throw error;
+	}
+};
+
+export const TranslateChats = async (chats: any) => {
+	try {
+		const res = await fetch(
+			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/translate`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					chats: chats,
+					source_lang: "auto",
+					target_lang: "en",
+				}),
+			}
+		);
+		if (!res.ok) {
+			throw new Error("Network response was not ok");
+		}
+		return res.json();
+	} catch (err) {
+		throw err;
+	}
+};
