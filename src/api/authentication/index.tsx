@@ -34,6 +34,7 @@ export const LoginAPI: (
 	email: string,
 	password: string
 ) => Promise<Response> = async (email, password) => {
+
 	try {
 		const response: any = await fetch(
 			`${process.env.NEXT_PUBLIC_AWS_BACKEND_API_URL}/login`,
@@ -51,7 +52,7 @@ export const LoginAPI: (
 		const res = await response.json();
 
 		if (!response.ok) {
-			throw new Error(res.error);
+			throw new Error("Network response was not ok");
 		}
 		return res.user;
 	} catch (error) {

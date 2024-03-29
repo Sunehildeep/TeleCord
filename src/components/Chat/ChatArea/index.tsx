@@ -219,27 +219,40 @@ const ChatArea = ({
 											className="w-12 h-12 text-tiny"
 										/>
 									</div>
-									<div className="flex flex-row justify-start items-start w-full">
+									<div className="flex flex-row justify-start items-end w-full">
 										<div>
 											<span className="text-gray-500">{chat.Username}</span>
-											<div className="p-2 bg-accent rounded-lg text-gray-300">
+											
 												{chat.Message.startsWith("file:") ? (
 													chat.Message.includes(".pdf") ||
 													chat.Message.includes(".docx") ? (
+														<div className="flex flex-row justify-start items-end">
+														<div className="p-2 bg-accent rounded-lg text-gray-300">
+															<a
+																href={chat.Message.substring(5)}
+																target="_blank"
+																rel="noreferrer"
+																className="text-gray-300"
+															>
+																<div key={index} className="flex gap-2">
+																	<span className="text-gray-300 flex flex-row gap-2 items-center justify-start">
+																		<FaFile />
+																		{chat.Message.substring(46)}
+																		
+																	</span>
+																</div>
+															</a>
+														</div>
+														
 														<a
-															href={chat.Message.substring(5)}
-															target="_blank"
-															rel="noreferrer"
-															className="text-gray-300"
+														href={chat.Message.substring(5)}
+														target="_blank"
+														rel="noreferrer"
+														className="text-gray-300 py-1 ml-2"
 														>
-															<div key={index} className="flex gap-2">
-																<span className="text-gray-300 flex flex-row gap-2 items-center justify-start">
-																	<FaFile />
-																	{chat.Message.substring(46)}
-																	<MdFileDownload />
-																</span>
-															</div>
+															<MdFileDownload />
 														</a>
+													</div>
 													) : (
 														<Image
 															width={100}
@@ -250,23 +263,29 @@ const ChatArea = ({
 														/>
 													)
 												) : (
-													<>
+													<div className="flex flex-row justify-start items-end">
+													<div className="p-2 bg-accent rounded-lg text-gray-300">
 														<div className="flex items-center justify-center">
 															<div className="p-2 bg-accent rounded-lg text-gray-300 flex-grow">
 																{chat.Message}
 															</div>
-															<div className="ml-2 cursor-pointer">
-																<FaFileAudio
-																	onClick={() => handleAudio(chat.Message)}
-																/>
-															</div>
+															
 														</div>
-													</>
+													</div>
+													<div className="ml-2 cursor-pointer text-gray-300 py-1">
+													<FaFileAudio
+														onClick={() => handleAudio(chat.Message)}
+													/>
+												</div>
+												</div>
 												)}
-											</div>
-										</div>
+											
+										</div> {/* end of bubble */}
+
+										
+
 										<div className="mx-4">
-											<span className="text-gray-500">
+											<span className="text-gray-500 text-[11px] lg:text-xs">
 												{formatDate(new Date(chat.Time))}
 											</span>
 										</div>
