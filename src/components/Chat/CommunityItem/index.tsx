@@ -69,23 +69,24 @@ const CommunityItem: React.FC<Community> = ({
 			isPressable={!isJoinable}
 			onPress={() => !isJoinable && router.push(`/chat/${communityId}`)}
 		>
-			<CardHeader className="justify-between">
-				<div className="flex gap-5">
+			<CardHeader className="flex-col lg:flex-row lg:justify-between">
+				<div className="flex gap-5 xl:gap-5">
 					<Avatar src={image} alt={communityName} size="lg" />
+
 					<div className="flex flex-col gap-1 items-start justify-center">
-						<h4 className="text-small font-semibold leading-none">
+						<h4 className="text-xs font-semibold leading-none xl:text-small">
 							{communityName}
 						</h4>
 					</div>
 				</div>
 				<h6 className="text-small text-default-400">{time}</h6>
 				{isJoinable ? (
-					<Button className="mt-2" color="primary" onClick={onPressJoin}>
+					<Button className="mt-2 text-xs xl:mt-0" color="primary" onClick={onPressJoin}>
 						Join
 					</Button>
 				) : (
 					<Button
-						className="mt-2"
+						className="mt-2 text-xs xl:mt-0"
 						color={`${isActive ? "primary" : "secondary"}`}
 						onClick={onPressLeave}
 					>
