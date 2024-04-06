@@ -22,7 +22,7 @@ const UserHandler = () => {
     // Logic to change user's password
   };
 
-  const handleUserChange = (event) => {
+  const handleUserChange = (event : any) => {
     setSelectedUser(event.currentTarget.value);
   };
 
