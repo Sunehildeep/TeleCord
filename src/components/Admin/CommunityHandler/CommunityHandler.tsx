@@ -25,7 +25,7 @@ const CommunityHandler: React.FC = () => {
     });
   };
 
-  const handleDeleteCommunity = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleDeleteCommunity = (event: React.MouseEvent<HTMLButtonElement>) => {
     
     // logic to delete a community
   };
@@ -70,7 +70,7 @@ const CommunityHandler: React.FC = () => {
         </div>
         <div className="p-6 bg-white rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-4">Delete Community</h2>
-          <select onChange={handleDeleteCommunity} className="select">
+          <select onChange={handleSelectCommunity} className="select">
             {communities.map((community, index) => (
               <option key={index} value={community}>
                 {community}
