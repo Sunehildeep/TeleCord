@@ -10,116 +10,122 @@ const CommunityHandler: React.FC = () => {
   const [usersInSelectedCommunity, setUsersInSelectedCommunity] = useState<string[]>([]);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [newUserName, setNewUserName] = useState<string>('');
-  const [allUsers, setAllUsers] = useState<string[]>([]);
   const [totalCommunities, setTotalCommunities] = useState<number>(0);
 
+  const fetchCommunities = () => {
+ 
+  };
 
-
-
+  useEffect(() => {
+    fetchCommunities();
+  }, []);
 
   const handleCreateCommunity = () => {
     createCommunity(newCommunityName).then((res) => {
       if (res.ok) {
-        // logic to refresh the communities list
+        fetchCommunities();
       }
+    }).catch((error) => {
+      console.error("Error creating community:", error);
     });
   };
 
-  const handleDeleteCommunity = (event: React.MouseEvent<HTMLButtonElement>) => {
-    
-    // logic to delete a community
+  const handleDeleteCommunity = () => {
+    if (selectedCommunity) {
+      // Call the logic to delete the selected community
+      // Example: deleteCommunity(selectedCommunity).then(...)
+    }
   };
 
   const handleSelectCommunity = (event: ChangeEvent<HTMLSelectElement>) => {
     const communityId = event.currentTarget.value;
     setSelectedCommunity(communityId);
-    // logic to fetch users in the selected community
+    // Call a function to fetch users in the selected community
+    // Example: fetchUsersInCommunity(communityId);
   };
 
   const handleRemoveUserFromCommunity = () => {
     if (selectedUser && selectedCommunity) {
-      // logic to remove a user from a community
+      // Call the logic to remove the selected user from the selected community
+      // Example: removeUserFromCommunity(selectedCommunity, selectedUser).then(...)
     }
   };
 
   const handleAddUserToCommunity = () => {
     if (newUserName && selectedCommunity) {
-      // logic to add a user to a community
+      // Call the logic to add the new user to the selected community
+      // Example: addUserToCommunity(selectedCommunity, newUserName).then(...)
     }
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Total Communities</h2>
-          <p className="text-3xl font-bold">{totalCommunities}</p>
+    <div className="flex flex-col items-center">
+      <h2 className="text-2xl font-bold mb-4 text-center">Community Manager</h2>
+      <div className="container flex mx-auto mt-auto h-[45vh]">
+        <div className="flex-1 p-7 mx-3 bg-primary rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-4 text-white">Total Communities</h2>
+          <p className="text-3xl font-bold text-white">{totalCommunities}</p>
         </div>
-        <div className="p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Create Community</h2>
+        <div className="flex-1 p-7 mx-3 bg-primary rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-4 text-white">Create Community</h2>
           <input
             type="text"
             value={newCommunityName}
             onChange={(e) => setNewCommunityName(e.target.value)}
             placeholder="New Community Name"
-            className="input"
+            aria-label="Enter community Name"
+            className="px-4 py-2 rounded-md focus:outline-none focus:border-purple-500 mb-5 w-full"
           />
-          <button onClick={handleCreateCommunity} className="btn-primary mt-4">
+          <button onClick={handleCreateCommunity} className="flex w-full bg-secondary hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 justify-center">
             Create
           </button>
         </div>
-        <div className="p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Delete Community</h2>
-          <select onChange={handleSelectCommunity} className="select">
+        <div className="flex-1 p-7 mx-3 bg-primary rounded-lg shadow-md" >
+          <h2 className="text-lg font-semibold mb-4 text-white">Delete Community</h2>
+          <select onChange={handleSelectCommunity} className="select px-4 py-2 rounded-md focus:outline-none focus:border-purple-500 mb-5 flex w-full" >
+            <option value="" disabled selected className="opacity-20" >Select Community </option>    
             {communities.map((community, index) => (
-              <option key={index} value={community}>
-                {community}
-              </option>
+              <option key={index} value={community} className="text-black">{community}</option>
             ))}
           </select>
-          <button onClick={handleDeleteCommunity} className="btn-primary mt-4">
+          <button onClick={handleDeleteCommunity} className="flex w-full bg-secondary hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 justify-center" >
             Delete
           </button>
         </div>
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mt-8">
-        <div className="p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Add User</h2>
+        <div className="flex-1 p-7 mx-3 bg-primary rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-4 text-white">Add User</h2>
+          <select onChange={handleSelectCommunity} className="select mb-5 p-2 flex w-full">
+            <option value="" disabled selected>Select Community</option>
+            {communities.map((community, index) => (
+              <option key={index} value={community} className="text-black">{community}</option>
+            ))}
+          </select>
           <input
             type="text"
             value={newUserName}
             onChange={(e) => setNewUserName(e.target.value)}
             placeholder="New User Name"
-            className="input"
+            className="px-4 py-2 rounded-md focus:outline-none focus:border-purple-500 mb-5 w-full"
           />
-          <select onChange={handleSelectCommunity} className="select mt-4">
-            {communities.map((community, index) => (
-              <option key={index} value={community}>
-                {community}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleAddUserToCommunity} className="btn-primary mt-4">
+          <button onClick={handleAddUserToCommunity} className="flex w-full bg-secondary hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 justify-center">
             Add
           </button>
         </div>
-        <div className="p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Manage Users</h2>
-          <select onChange={handleSelectCommunity} className="select">
+        <div className="flex-1 p-7 mx-3 bg-primary rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-4 text-white">Manage Users</h2>
+          <select onChange={handleSelectCommunity} className="select mb-5 p-2 flex w-full">
+            <option value="" disabled selected>Select Community</option>
             {communities.map((community, index) => (
-              <option key={index} value={community}>
-                {community}
-              </option>
+              <option key={index} value={community} className="text-black">{community}</option>
             ))}
           </select>
-          <select onChange={(e) => setSelectedUser(e.currentTarget.value)} className="select mt-4">
-            {allUsers.map((user, index) => (
-              <option key={index} value={user}>
-                {user}
-              </option>
+          <select onChange={(e) => setSelectedUser(e.currentTarget.value)} className="select mb-5 p-2 flex w-full">
+            <option value="" disabled selected>Select User</option>
+            {usersInSelectedCommunity.map((user, index) => (
+              <option key={index} value={user} className="text-black">{user}</option>
             ))}
           </select>
-          <button onClick={handleRemoveUserFromCommunity} className="btn-primary mt-4">
+          <button onClick={handleRemoveUserFromCommunity} className="flex w-full bg-secondary hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 justify-center">
             Remove User
           </button>
         </div>
@@ -129,6 +135,8 @@ const CommunityHandler: React.FC = () => {
 };
 
 export default CommunityHandler;
+
+
 
 
 
