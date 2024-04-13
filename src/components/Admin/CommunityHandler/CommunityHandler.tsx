@@ -10,41 +10,51 @@ const CommunityHandler: React.FC = () => {
   const [usersInSelectedCommunity, setUsersInSelectedCommunity] = useState<string[]>([]);
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [newUserName, setNewUserName] = useState<string>('');
-  const [allUsers, setAllUsers] = useState<string[]>([]);
   const [totalCommunities, setTotalCommunities] = useState<number>(0);
 
+  const fetchCommunities = () => {
+ 
+  };
 
-
-
+  useEffect(() => {
+    fetchCommunities();
+  }, []);
 
   const handleCreateCommunity = () => {
     createCommunity(newCommunityName).then((res) => {
       if (res.ok) {
-        // logic to refresh the communities list
+        fetchCommunities();
       }
+    }).catch((error) => {
+      console.error("Error creating community:", error);
     });
   };
 
-  const handleDeleteCommunity = (event: React.MouseEvent<HTMLButtonElement>) => {
-    
-    // logic to delete a community
+  const handleDeleteCommunity = () => {
+    if (selectedCommunity) {
+      // Call the logic to delete the selected community
+      // Example: deleteCommunity(selectedCommunity).then(...)
+    }
   };
 
   const handleSelectCommunity = (event: ChangeEvent<HTMLSelectElement>) => {
     const communityId = event.currentTarget.value;
     setSelectedCommunity(communityId);
-    // logic to fetch users in the selected community
+    // Call a function to fetch users in the selected community
+    // Example: fetchUsersInCommunity(communityId);
   };
 
   const handleRemoveUserFromCommunity = () => {
     if (selectedUser && selectedCommunity) {
-      // logic to remove a user from a community
+      // Call the logic to remove the selected user from the selected community
+      // Example: removeUserFromCommunity(selectedCommunity, selectedUser).then(...)
     }
   };
 
   const handleAddUserToCommunity = () => {
     if (newUserName && selectedCommunity) {
-      // logic to add a user to a community
+      // Call the logic to add the new user to the selected community
+      // Example: addUserToCommunity(selectedCommunity, newUserName).then(...)
     }
   };
 
@@ -111,7 +121,7 @@ const CommunityHandler: React.FC = () => {
           </select>
           <select onChange={(e) => setSelectedUser(e.currentTarget.value)} className="select mb-5 p-2 flex w-full">
             <option value="" disabled selected>Select User</option>
-            {allUsers.map((user, index) => (
+            {usersInSelectedCommunity.map((user, index) => (
               <option key={index} value={user} className="text-black">{user}</option>
             ))}
           </select>
@@ -122,16 +132,11 @@ const CommunityHandler: React.FC = () => {
       </div>
     </div>
   );
-  
-  
-  
-  
-  
-  
-  
 };
 
 export default CommunityHandler;
+
+
 
 
 

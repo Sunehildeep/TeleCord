@@ -4,8 +4,12 @@ import HandleUsers from './UserHandler/UserHandler';
 const AdminPanel = () => {
   return (
     <div>
-      <HandleCommunities />
+      <div >
+        <HandleCommunities />
+      </div>
+      <div className='h-[50vh]'>
       <HandleUsers />
+      </div>
     </div>
   );
 };
